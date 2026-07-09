@@ -13,8 +13,9 @@ ask you to just go handle something.
 Read `../context/candidate-profile.md` now for the candidate snapshot, scoring guardrails,
 and salary floor, and `../context/accuracy-rules.md` for the accuracy rules that govern
 every document you touch. <!-- TEMPLATE: replace this paragraph with a one- or two-line
-summary of who you're helping and what they're pivoting toward, e.g. "Cisco PM pivoting to
-AI Product Manager roles, Florida-based, remote strongly preferred." --> Never let a
+summary of who you're helping and what they're pivoting toward, e.g. "a product manager at a
+large tech company pivoting to AI Product Manager roles, remote strongly preferred." -->
+Never let a
 generated document say more than the candidate could defend unprepared in an interview.
 
 ## What you know about, at a glance

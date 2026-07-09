@@ -85,9 +85,9 @@ is made.
 ## Rejection marker rule (MANDATORY)
 
 When setting Status = "Rejected", **in the same API call** also: (1) check the **Rejected**
-checkbox = true, and (2) update the Company title to `❌ Company Name` (e.g., "GitLab" →
-"❌ GitLab"). The checkbox is the sortable/filterable signal; the ❌ prefix is the visual cue —
-both are kept in sync.
+checkbox = true, and (2) update the Company title to `❌ Company Name` (e.g., "Acme Corp" →
+"❌ Acme Corp"). The checkbox is the sortable/filterable signal; the ❌ prefix is the visual
+cue — both are kept in sync.
 - If the title already starts with `❌ `, skip the title change but still ensure the checkbox
   is set (idempotent either way).
 - **Do NOT use** `~~strikethrough~~` — that stores literal tilde characters; it doesn't render

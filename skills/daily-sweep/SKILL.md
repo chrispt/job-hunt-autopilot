@@ -161,7 +161,7 @@ don't guess.
    - **Rejections:** apply the Rejection marker rule in `../../context/notion-schema.md`
      (checkbox + `❌` title prefix in the same API call, idempotent) and clear any future
      Follow Up Date. Dedup and matching compare on the bare company name — Notion's fuzzy
-     search finds `❌ GitLab` when you query `GitLab`.
+     search finds `❌ Acme Corp` when you query `Acme Corp`.
    - **Confirmations:** Application Confirmed = true (Status unchanged).
    - **Interview/offer:** set Status; add a 1-line Notes entry with detail and any date.
    - **Idempotency:** if Status already reflects the signal, skip — overlapping daily
@@ -220,7 +220,7 @@ dead link:
   up, say so explicitly rather than listing "0 results"
 
 **Application updates (Part 2):**
-- Pages updated, old → new Status (e.g., "CareFirst: Applied → Rejected")
+- Pages updated, old → new Status (e.g., "Acme Corp: Applied → Rejected")
 - Confirmations recorded; ambiguous / untracked-company emails flagged for review
 - Note if the email check was skipped (mail tool unavailable)
 

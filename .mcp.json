@@ -1,0 +1,35 @@
+{
+  "$comment": "This plugin does NOT bundle these MCP servers — a plugin's .mcp.json can only ship stdio servers it launches itself, and every connector below is a remote OAuth connector managed in claude.ai / Claude Code settings. This file documents them as required prerequisites (see README.md and SETUP.md) so the dependency is visible in the plugin repo; it intentionally defines no servers of its own. Indeed/Dice below are examples — swap in whatever job-board MCP(s) you actually connect, and update context/config.md with the real tool bindings.",
+  "requiredConnectors": [
+    {
+      "name": "Notion",
+      "purpose": "The Job Search Pipeline database — read/write for every skill in this plugin.",
+      "setup": "Connect via claude.ai connector settings, or `claude mcp` / /mcp in an interactive session."
+    },
+    {
+      "name": "Google Drive",
+      "purpose": "Live read of the master resume (authoritative candidate facts) used by daily-sweep Step 0 and apply-assist.",
+      "setup": "Connect via claude.ai connector settings."
+    },
+    {
+      "name": "Gmail",
+      "purpose": "Read-only email reconciliation (rejection/interview/offer detection) and LinkedIn job-alert email discovery, used by daily-sweep Part 2.",
+      "setup": "Connect via claude.ai connector settings."
+    },
+    {
+      "name": "Indeed job-search MCP",
+      "purpose": "Primary job-board discovery source, used by daily-sweep Part 1.",
+      "setup": "Connect via claude.ai connector settings."
+    },
+    {
+      "name": "Dice job-search MCP",
+      "purpose": "Secondary job-board discovery source with a hard salary-floor filter, used by daily-sweep Part 1a.",
+      "setup": "Connect via claude.ai connector settings."
+    },
+    {
+      "name": "Chrome MCP / Playwright / Claude Chrome extension",
+      "purpose": "Reading full job descriptions and filling ATS forms in apply-assist. Fallback order: Chrome MCP, then Playwright, then the Claude Chrome extension.",
+      "setup": "Chrome MCP and the Claude Chrome extension are configured per the user's global CLAUDE.md; Playwright ships as a separate plugin/MCP server."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "my-personal-plugins",
+  "owner": {
+    "name": "YOUR NAME"
+  },
+  "description": "Personal plugin marketplace for YOUR NAME's Claude Code plugins.",
+  "plugins": [
+    {
+      "name": "job-search-agent",
+      "source": "./",
+      "description": "Notion-backed job search pipeline: apply-assist, daily/weekly sweeps, and the job-agent subagent.",
+      "version": "0.1.0"
+    }
+  ]
+}

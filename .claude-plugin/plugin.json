@@ -1,0 +1,8 @@
+{
+  "name": "job-search-agent",
+  "version": "0.1.0",
+  "description": "A personal job search agent template — Notion-backed pipeline tracking, JD-verified application prep (apply-assist), and the daily/weekly automations that keep it running, packaged as one plugin. Fork this and fill in context/ with your own details before use.",
+  "author": {
+    "name": "YOUR NAME"
+  }
+}

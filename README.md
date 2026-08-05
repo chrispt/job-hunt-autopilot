@@ -20,7 +20,6 @@ exactly what to fill in and in what order.
 | `skills/daily-sweep/` | Job-board discovery, email reconciliation, and an aging-queue/follow-up/ghosting report. |
 | `skills/referral-match/` | Optional: matches your professional network against open pipeline roles and drafts the warm referral ask; for roles with no warm contact, can surface a budget-capped cold-referral shortlist. Delete if you don't have an exportable network roster. |
 | `skills/funnel-review/` | Weekly funnel metrics and a rejection-pattern analysis that proposes concrete scoring/exclusion adjustments; can also re-screen the standing queue when a screening rule changes, and run a periodic market-calibration check. |
-| `skills/cert-nudge/` | Example: a weekly check-in on a certification roadmap. Fully personal content — rewrite or delete. |
 | `commands/apply.md`, `commands/sweep.md`, `commands/job-status.md`, `commands/referral-match.md` | Slash-command shortcuts into the skills above. |
 | `context/` | Shared reference the agent and skills all read from — candidate profile & scoring strategy, environment/tool bindings, accuracy rules, the Notion schema, and ATS form-fill learnings. Single source of truth, so rules never drift between files. **This is where your personalization lives.** |
 | `data/exclusions.md` | Companies deliberately passed on after real evaluation — checked before any discovery or apply-assist effort. Starts empty. |
@@ -63,7 +62,6 @@ your fork; see `SETUP.md`.
 |---|---|---|
 | daily-job-sweep | Weekdays morning | `job-search-agent` skill `daily-sweep` |
 | weekly-funnel-review | Once a week | `job-search-agent` skill `funnel-review` |
-| cert-weekly-nudge (optional) | Once a week | `job-search-agent` skill `cert-nudge` |
 
 ## The automation boundary
 

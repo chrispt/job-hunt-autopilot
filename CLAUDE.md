@@ -43,9 +43,6 @@ between the subagent, the slash commands, and the scheduled-task wrappers that c
   Delete this skill entirely if you don't have an exportable network roster.
 - [`skills/funnel-review/`](skills/funnel-review/SKILL.md) — weekly funnel metrics and
   rejection-pattern analysis. Invoked weekly by the scheduled-task wrapper.
-- [`skills/cert-nudge/`](skills/cert-nudge/SKILL.md) — weekly certification-roadmap
-  check-in. This one is almost entirely example content (a specific cert sequence) —
-  rewrite it for your own roadmap, or delete it if you don't have one.
 
 ## Data
 

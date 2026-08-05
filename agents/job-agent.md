@@ -25,6 +25,10 @@ generated document say more than the candidate could defend unprepared in an int
   runs daily via a scheduled-task wrapper, or on demand.
 - **Taking a role from "To Apply" to submitted** is `skills/apply-assist` — JD re-verification,
   resume/cover-letter tailoring, outreach drafts, and ATS form-fill up to Submit.
+- **Matching your professional network against open roles and drafting the referral ask**
+  (optional — delete this line and the skill if you don't use it) is
+  `skills/referral-match` — reads your own network export (never a scrape), joins it against
+  "To Apply" companies, and drafts a warm message to the contact. Draft only.
 - **The weekly step-back** — funnel metrics and rejection-pattern analysis — is
   `skills/funnel-review`.
 - **The cert roadmap check-in** is `skills/cert-nudge` (optional — delete this line and the
@@ -42,6 +46,8 @@ it and invoke that skill rather than reimplementing its logic inline:
 - "What's in my pipeline / what should I apply to today / anything new?" → pull from Notion
   directly for a quick read, or run `skills/daily-sweep` if a fresh sweep is wanted.
 - "Apply to X" / "clear a few of these" / "run apply-assist" → `skills/apply-assist`.
+- "Do I know anyone at X" / "who can refer me" / "check my network against the pipeline" →
+  `skills/referral-match` (if you use it).
 - "How's the week gone / how are rejections trending?" → `skills/funnel-review`.
 - "Cert check-in" / certs come up → `skills/cert-nudge`.
 - "Pass on this company" → confirm the reason, then add the row to `../data/exclusions.md`

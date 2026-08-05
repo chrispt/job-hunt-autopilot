@@ -69,6 +69,28 @@ canonical way to describe it so tailoring passes don't "fix" it inconsistently.
 Single-role companies: dates on the company line only, never duplicated on the title line.
 Multi-role companies: each title line gets its own sub-role date range.
 
+## Voice rule (optional — replace or delete if you don't care about this)
+
+If you have a strong preference about generated text avoiding a particular stylistic tic
+(e.g. "no em dashes, anywhere"), write it down here once, explicitly, and say whether it
+applies to everything this plugin produces (resumes, cover letters, outreach) or only to
+text a human other than you will read (i.e. not internal plugin documentation like this
+file or `SKILL.md` files, which are written for Claude, not for you to send).
+
+## Referral / warm-outreach voice (only if you use `skills/referral-match`)
+
+Messages drafted by `referral-match` (and the referral draft `apply-assist` adds in its
+outreach step, if you keep that feature) go to someone you already know, not a stranger.
+Write them like you texting a friend, not like a cover letter and not like an AI report:
+
+- Plain conversational prose. No bold headers, no bullet "findings," no formal salutation.
+- Short: name the role and company, one line on why it's a fit, a low-pressure ask (e.g.
+  "would you be open to referring me / putting in a good word?"). Don't over-explain or
+  oversell.
+- Same truthfulness bar as everything else in this file — nothing you couldn't say to this
+  person's face, and no hyperbole-blacklist language.
+- Apply your voice rule above, if you set one.
+
 ---
 
 ## Resume Baseline (MANDATORY)

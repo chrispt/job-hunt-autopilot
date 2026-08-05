@@ -37,6 +37,10 @@ between the subagent, the slash commands, and the scheduled-task wrappers that c
   reconciliation, and throughput surfacing. Invoked daily by the scheduled-task wrapper, or
   manually via `/sweep`. **The discovery query list is an example — replace it with your own
   pivot targets.**
+- [`skills/referral-match/`](skills/referral-match/SKILL.md) — optional: matches your
+  professional network against open pipeline roles and drafts warm referral asks; also
+  surfaces a cold-referral shortlist for roles with no warm contact. `/referral-match`.
+  Delete this skill entirely if you don't have an exportable network roster.
 - [`skills/funnel-review/`](skills/funnel-review/SKILL.md) — weekly funnel metrics and
   rejection-pattern analysis. Invoked weekly by the scheduled-task wrapper.
 - [`skills/cert-nudge/`](skills/cert-nudge/SKILL.md) — weekly certification-roadmap
@@ -47,6 +51,12 @@ between the subagent, the slash commands, and the scheduled-task wrappers that c
 
 - [`data/exclusions.md`](data/exclusions.md) — companies deliberately passed on; checked by
   `daily-sweep` and `apply-assist` before spending any effort on a company. Starts empty.
+- [`data/connections-README.md`](data/connections-README.md) — optional: documents the
+  network-export CSV `referral-match` reads; the roster itself lives in your own storage, not
+  committed here. Delete alongside `referral-match` if you don't use it.
+- [`data/refer-me.md`](data/refer-me.md) — optional: a worked example of why a cold-referral
+  tool should stay manual-only rather than automated, if `referral-match` surfaces one for
+  you. Delete alongside `referral-match` if you don't use it.
 
 ## Automation boundary (do not weaken this while extending the plugin)
 

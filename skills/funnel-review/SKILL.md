@@ -1,6 +1,6 @@
 ---
 name: funnel-review
-description: Weekly review of the Notion Job Search Pipeline — funnel metrics, apps-out velocity, and a rejection-pattern analysis that turns each week's outcomes into concrete positioning/targeting adjustments
+description: Weekly review of the Notion Job Search Pipeline — funnel metrics, apps-out velocity, and a rejection-pattern analysis that turns each week's outcomes into concrete positioning/targeting adjustments; optionally re-screens the standing queue whenever a screening rule changes, and runs a periodic market-calibration check against live listings
 ---
 
 You are producing a weekly job-search funnel review from the Notion "Job Search Pipeline"
@@ -59,7 +59,54 @@ don't edit `daily-sweep`'s SKILL.md yourself.
   to its stage (e.g., Interviewing with no Interview Date set, or no update in 3+ weeks).
 - Any new candidate for `../../data/exclusions.md` based on this week's evaluations.
 
-## 5. Output
+## 5. Standing-queue re-screen (if `daily-sweep` uses an intake-time screen)
+
+Any screening rule `daily-sweep` adds runs **only at intake**. Nothing re-checks roles that
+were already sitting in the queue when the rule landed, so a new rule silently applies to
+future discoveries and leaves the existing backlog untouched — and the backlog is usually
+where most of the queue lives.
+
+**When to run:** whenever step 3 proposes a new or changed screening rule, whenever one was
+adopted since the last review, and as a periodic backstop (e.g. monthly, alongside step 6).
+Skip it silently otherwise.
+
+**Scope it to the actionable band** — only re-screen rows at or above your resume-build floor
+in `../../context/candidate-profile.md`. Below-floor rows are inert; they never reach an
+`apply-assist` run, so withdrawing them is churn that buys nothing.
+
+**Never sweep on a title match alone.** These screens are string heuristics and they misfire
+in ways that are invisible in aggregate — hand-check every match against what the role
+actually is (see the false-positive classes noted in `daily-sweep`'s seniority-screen
+section). **Honour the documented overrides** the screen allows (a named referral contact, or
+a JD already read and confirmed not to gate on the rank) — a blind re-sweep would undo a role
+the pipeline already validated.
+
+**Propose, never auto-apply.** Same rule as step 3: removal is Status → "Withdrawn" plus a
+dated Notes annotation, never a delete. Preserve the existing scoring rationale and append;
+don't overwrite it.
+
+**Report what the re-screen caught and what it spared**, including the false positives and
+exemptions by name. A bare count reads as routine cleanup; the exceptions are what tells you
+whether the rule is calibrated or is quietly eating good roles.
+
+## 6. Market calibration (optional, e.g. monthly)
+
+This answers a question the pipeline can't answer from its own data: what share of your
+actual target market screens above your real experience level, and what share pays above your
+floor. If most of the market demands more years than you have, a stretch of rejections is a
+targeting problem, not a resume problem — worth knowing before proposing another scoring
+tweak in step 3.
+
+If you've set up a market-corroboration fallback source (`../../context/config.md`), fetch a
+small fixed set of listing pages for your pivot-target queries and report the **distribution**
+across them, not individual roles: share stating an experience minimum at or above your gate
+in `candidate-profile.md` vs. below it vs. not stated, and share stating a base at or above
+your salary floor vs. below vs. not stated. This is read-only market context — it doesn't
+touch Notion or any individual pipeline page. If a fetch is blocked, skip that page, note it,
+and continue with the rest. Any resulting adjustment is a **proposal**, never a self-edit to
+`daily-sweep`.
+
+## 7. Output
 
 Write the review in plain, direct prose — like a short note you'd write to yourself, not a
 formatted AI report. Skip heavy bold-header/bullet-cascade structure; a few short paragraphs

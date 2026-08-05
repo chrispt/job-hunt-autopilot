@@ -33,9 +33,12 @@ paste it here.
 | Priority | select | 🥇 High · 🥈 Medium · 🥉 Low (rename tiers to fit your own targeting) |
 | Track | select | your own role-family buckets, e.g. one select option per pivot target in `candidate-profile.md` |
 | Match % | number | — |
-| ATS | select | — |
+| ATS | select | Greenhouse · Ashby · Workday · LinkedIn · Lever · Direct · (add options as you
+  encounter new platforms rather than leaving the field blank — see the note below) |
 | Easy Apply | checkbox | — |
 | Rejected | checkbox | — |
+| Application Confirmed | checkbox | — (set when an ATS sends a "we've received your
+  application" email, before any human status update arrives) |
 | Date Applied | date | — |
 | Follow Up Date | date | — |
 | Interview Date | date | — |
@@ -45,7 +48,30 @@ paste it here.
 | Resume URL | url | — |
 | Cover Letter URL | url | — |
 
-New entries auto-set to Status = "To Apply".
+**Keep select-field option lists current.** If an application goes through a platform not yet
+in the `ATS` (or `Source`) option list, add the option rather than forcing the nearest wrong
+value or leaving the field blank — a blank field silently drops that row out of any
+segmentation by that field later. Fetch the data source first to read the current options
+before altering the list, since most "set options" API calls replace the whole list rather
+than appending to it.
+
+**Status does NOT auto-default on create — verify this against your own connector before
+relying on it.** It's a reasonable assumption that a select field with an obvious "first"
+option (like `Status = "To Apply"`) gets applied automatically when a new page is created via
+the API, the way a UI default would. At least one common Notion connector does **not** do
+this: any UI default configured on the database simply does not apply to API-created rows,
+so an omitted Status silently writes as null. A null-Status row looks complete in the Notion
+UI and is otherwise indistinguishable from a healthy row, but any skill or view that filters
+on `Status = "To Apply"` will never surface it again — the roles most in need of surfacing
+are exactly the ones silently dropped. **Set Status explicitly, in the same create call as
+every other field, on every row, every run** — and confirm empirically (create one test row
+without setting it, then check whether it actually came back with your intended default)
+before trusting otherwise for your own connector. If it doesn't auto-default, treat "verify
+the field you assumed was set actually got set" as a standing practice worth applying to any
+other field you're tempted to assume a default for, and consider a periodic check (e.g. a
+saved view or a `COUNT(*) WHERE Status IS NULL` query) that a discovery skill runs after every
+create batch and reports even when the count is zero — a check that only speaks up on
+failure is indistinguishable from a check that never ran.
 
 ## SQL-mode query quirks (verified against Notion's API — check these still hold for you)
 
@@ -55,8 +81,22 @@ When using a SQL-mode Notion query tool:
 - Created time is the camelCase built-in `createdTime`.
 - Result pages cap at ~100 rows — paginate with LIMIT/OFFSET for full-table pulls once your
   pipeline grows past that.
-- For dedup sweeps, one paginated full-table pull of Company/Role/Status is usually cheaper
-  than per-company search calls; either is acceptable.
+- **`has_more: false` is not necessarily trustworthy as an end-of-table signal** for a raw
+  `SELECT ... LIMIT 100 OFFSET 0` pull — test this against your own connector before trusting
+  a single page as "the whole table." If a single-page pull ever returns `has_more: false`
+  against a table you know is larger, that's a bug in the connector's pagination metadata, and
+  trusting it means silently checking only a fraction of your rows (e.g. missing duplicates a
+  dedup pass was supposed to catch). If you must do a full-table pull: run `SELECT COUNT(*)`
+  first, then fetch `ceil(count/100)` pages by incrementing OFFSET by 100 each time, stopping
+  only when you've collected that many rows — never stop early because `has_more` said so.
+- **Prefer a targeted pull over a full-table pull** once your pipeline grows past a few
+  hundred rows. A `WHERE Company IN ('Name1', 'Name2', ...)` query covering just the
+  candidates from one run is cheap regardless of table size and sidesteps the pagination trap
+  above entirely. Reserve full-table pulls for cases that genuinely need the whole table (a
+  duplicate-density audit, say), not routine dedup.
+- SQL-mode query tools sometimes carry their own per-session or per-day query-count cap,
+  separate from any plan-level gate — budget queries per run, and prefer the targeted-pull
+  pattern above, which also helps here by replacing many paginated calls with one.
 
 ## Queue ranking convention
 

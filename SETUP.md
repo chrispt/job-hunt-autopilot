@@ -63,8 +63,9 @@ Replace every placeholder with your real values:
 - Your job-board MCP tool bindings (the fully-qualified `mcp__<server>__<tool>` names — ask
   Claude Code to list your connected tools if you're not sure of the exact binding).
 - Your résumé's real path and how to fetch it live.
-- Your preferred tailored-document naming and save location.
-- Your local staging folder for ATS file uploads.
+- Your preferred tailored-document naming and save location (see the note in `config.md`
+  about why a separate "staging folder" for ATS uploads may not actually be necessary — test
+  your own browser tool's session-sharing behavior before building around one).
 
 ## 5. Fill in `context/accuracy-rules.md`
 
@@ -86,12 +87,24 @@ in `skills/cert-nudge/SKILL.md`. If not, delete the skill folder, remove its sch
 wrapper (step 8), and remove the two references to it in `agents/job-agent.md` and
 `CLAUDE.md`.
 
-## 7. Review `skills/daily-sweep/SKILL.md`'s Part 1
+## 7. Decide what to do with `skills/referral-match/`
+
+This skill is optional and only useful if you can export a roster of your professional
+network (e.g. a LinkedIn connections export) to a CSV — see `data/connections-README.md` for
+one worked example. If you have one and want the warm-referral matching, fill in the roster
+path and (if you use one) a cold-referral tool's account tier in `context/config.md`. If not,
+delete `skills/referral-match/`, `commands/referral-match.md`, `data/connections-README.md`,
+`data/refer-me.md`, and the references to it in `agents/job-agent.md`, `CLAUDE.md`, and
+`skills/daily-sweep/SKILL.md` step 1a.
+
+## 8. Review `skills/daily-sweep/SKILL.md`'s Part 1
 
 Replace the example search-query list and the two example locations with your own pivot
-targets and geography from `candidate-profile.md`.
+targets and geography from `candidate-profile.md`. If your target roles commonly have a
+predictable rejection pattern once you've run this for a few weeks, consider building the
+optional seniority/comp screen documented in that skill's Part 1.
 
-## 8. Install the plugin
+## 9. Install the plugin
 
 ```
 claude --plugin-dir "/path/to/your/fork"
@@ -101,14 +114,14 @@ Or register your fork as a personal plugin marketplace (edit
 `.claude-plugin/marketplace.json` — it's already set up as an example) and
 `/plugin install job-search-agent` from any session.
 
-## 9. Set up scheduled tasks (optional)
+## 10. Set up scheduled tasks (optional)
 
 Scheduled tasks live outside the plugin, in `~/.claude/scheduled-tasks/`, because plugins
 can't bundle them. Create thin wrapper tasks that invoke the plugin skills — see the
 Scheduled Tasks section of the README for the suggested schedule. Each wrapper just needs to
 tell Claude Code to run `/sweep`, `/apply-assist`, etc. against your plugin install.
 
-## 10. Take it for a test drive
+## 11. Take it for a test drive
 
 Before trusting it with real applications:
 1. Run `/sweep` manually and check the roles it finds and how it scores them make sense.

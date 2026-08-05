@@ -9,10 +9,16 @@ own preference. -->
 
 ## All ATS platforms
 
-- **Resume upload must be handed to the user.** The Chrome `file_upload` tool only accepts
-  session-shared files, not arbitrary paths. Workaround: stage a copy in
-  `REPLACE-WITH-YOUR-LOCAL-STAGING-FOLDER` (see `config.md`) and ask the user to click Attach.
-  Also deliver the file via `SendUserFile` so it appears in chat.
+- **Resume upload must be handed to the user.** Chrome-style `file_upload` tools generally
+  only accept files the user has explicitly shared with that session, not arbitrary paths —
+  and a "staging" copy in some other local folder may be rejected the same way a random path
+  would be, depending on your browser tool. Test this once against your own setup rather than
+  assuming a staging copy solves it (see the note in `config.md`). Point the user at wherever
+  the file actually lives and ask them to click Attach; also deliver the file via
+  `SendUserFile` (or your environment's equivalent) so it appears in chat regardless.
+- **Check the accepted file types before generating documents.** Some ATSes accept PDF only,
+  or have no cover-letter field at all — building both a `.docx` and a `.pdf` up front avoids
+  converting mid-application with the form already open.
 - **Always leave to the user:** any truthfulness/anti-AI attestation, voluntary self-ID,
   pronouns, salary fields, EEO disclosures, and the final Submit button. Greenhouse carries a
   penalty-of-law attestation warning specifically about AI-fabricated qualifications.
@@ -59,6 +65,44 @@ LinkedIn MCP) connected to that role or team.
   Assist application too.
 - Draft in the candidate's own voice: plain conversational prose, no bold headers or bullet
   "findings" — it should read like they wrote it, not like an AI report.
+
+## Employer "AI in hiring" policy language
+
+Some employer careers sites carry a general "AI During the Hiring Process" policy statement
+prohibiting AI-generated application materials unless the employer explicitly authorizes it.
+This is distinct from a per-application anti-AI attestation checkbox (that one always stays
+with the candidate, per the automation boundary below, unchanged).
+
+**Generic careers-site boilerplate** (a broad statement with no specific method or disclosure
+field attached) most plausibly targets AI-written interview or assessment responses, not
+resume/cover-letter tailoring done ahead of applying — but this is a judgment call, not a
+certainty, and reasonable people (and employers) could read it either way. Decide your own
+standing position on this once, write it down here, and apply it consistently rather than
+re-litigating it per application. If a policy reads as unambiguously broader than that (e.g.
+it explicitly names resumes/cover letters, not just "responses" or "assessments"), don't
+assume your standing position covers it — treat it as the next case below instead.
+
+**Employer-specific candidate AI policies are a different case entirely, not covered by a
+generic standing position.** Some employers publish a named, candidate-facing AI policy AND
+attach a required disclosure field to the application form (e.g. a dropdown asking which AI
+tools you used and how). That's categorically different from generic boilerplate:
+
+- **Read the linked policy before filling any field.** A dropdown or checkbox named for an AI
+  policy is the tell — don't answer it from assumption.
+- **Tailoring the master resume is usually still fine** even under a strict policy, since it's
+  the candidate's own work being retargeted — that's typically "refine," not "generate."
+  Confirm this reading against the specific policy's wording, though; don't assume it.
+- **Free-text essay answers are the highest-risk case.** A policy that permits "refining your
+  own draft" but prohibits generating an answer from a prompt means: the candidate drafts
+  first, in their own words, and any AI assistance comes after — supplying raw material
+  (facts, real incidents, numbers) for someone else to draft from, then refining their draft,
+  is a very different thing from writing the answer for them.
+- **A cover letter written from scratch by AI likely falls on the prohibited side** of that
+  same line under a strict policy. If the form has no cover-letter field, simplest is to just
+  not attach one rather than test the boundary.
+- The risk of getting this wrong isn't only rejection — on a role where the pitch is judgment
+  about these systems, violating the employer's own stated AI policy undercuts the candidacy
+  directly, not just the paperwork.
 
 ## Automation boundary (MANDATORY — this is the canonical statement; other files reference it)
 

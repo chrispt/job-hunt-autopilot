@@ -1,0 +1,15 @@
+{
+  "_comment": "Single source of truth for discovery queries. Read by skills/daily-sweep (what to run) and scripts/audit.py (what to expect). Replace these defaults with your own target titles; keep quotes and OR operators, the sweep issues the text verbatim. Set up a LinkedIn job alert (daily email) for each query too: the digests are the richest source.",
+  "locations": ["remote", "<your state or metro>"],
+  "queries": [
+    {"id": 1, "search": "\"<primary target title>\""},
+    {"id": 2, "search": "\"<second target title>\""},
+    {"id": 3, "search": "\"<third target title>\" OR \"<synonym>\""},
+    {"id": 4, "search": "\"<adjacent title>\""},
+    {"id": 5, "search": "\"<entry band title>\" OR \"<title> II\""}
+  ],
+  "light_mode": {"_comment": "Run when the fresh queue is over the gate threshold: remote only, primary queries only.", "query_ids": [1, 2], "locations": ["remote"]},
+  "gate": {"fresh_queue_threshold": 20, "fresh_window_days": 14},
+  "linkedin_alert_sender": "jobalerts-noreply@linkedin.com",
+  "indeed_recency_days": 5
+}

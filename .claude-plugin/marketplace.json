@@ -1,15 +1,16 @@
 {
-  "name": "my-personal-plugins",
+  "name": "job-hunt-autopilot",
   "owner": {
-    "name": "YOUR NAME"
+    "name": "Chris Pohlad-Thomas",
+    "url": "https://github.com/chrispt"
   },
-  "description": "Personal plugin marketplace for YOUR NAME's Claude Code plugins.",
+  "description": "Community edition of the job-search-agent plugin: a scheduled, self-auditing job search for Claude Code.",
   "plugins": [
     {
       "name": "job-search-agent",
       "source": "./",
-      "description": "Notion-backed job search pipeline: apply-assist, daily/weekly sweeps, and the job-agent subagent.",
-      "version": "0.1.0"
+      "description": "Scheduled, self-auditing job search: Notion pipeline, gated discovery, inbox reconciliation, application packets.",
+      "version": "0.2.4"
     }
   ]
 }

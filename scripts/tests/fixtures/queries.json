@@ -1,0 +1,21 @@
+{
+  "_comment": "Single source of truth for discovery queries. Read by skills/daily-sweep (what to run) and scripts/audit.py (what to expect). Edit here, nowhere else.",
+  "locations": ["remote", "Florida"],
+  "queries": [
+    {"id": 1,  "search": "AI Product Manager"},
+    {"id": 2,  "search": "Technical Product Manager"},
+    {"id": 3,  "search": "\"AI Governance\" OR \"AI Policy\" OR \"Responsible AI\""},
+    {"id": 4,  "search": "\"Customer Success Manager\" technology"},
+    {"id": 5,  "search": "\"Technical Enablement\" OR \"Sales Enablement\""},
+    {"id": 6,  "search": "Staff Product Manager"},
+    {"id": 7,  "search": "\"Product Manager\" communications OR collaboration"},
+    {"id": 8,  "search": "\"AI Enablement\" OR \"AI Adoption\""},
+    {"id": 9,  "search": "\"AI Program Manager\" OR \"AI Transformation\""},
+    {"id": 10, "search": "\"Associate Product Manager\" OR \"Product Manager II\""},
+    {"id": 11, "search": "\"Adoption Specialist\" OR \"Customer Onboarding Manager\" OR \"Enablement Specialist\""}
+  ],
+  "light_mode": {"_comment": "Run when the fresh queue is over the gate threshold. Remote only, AI-centric queries only.", "query_ids": [1, 8, 9], "locations": ["remote"]},
+  "gate": {"fresh_queue_threshold": 20, "fresh_window_days": 14},
+  "linkedin_alert_sender": "jobalerts-noreply@linkedin.com",
+  "indeed_recency_days": 5
+}

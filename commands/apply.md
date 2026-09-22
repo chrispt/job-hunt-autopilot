@@ -16,5 +16,5 @@ This is a thin entry point to the `apply-assist` skill in this plugin
 - A number (e.g. `3`) → run it for that many roles, same ordering.
 - A company name → run it for that named role already in the pipeline.
 
-If `$ARGUMENTS` doesn't clearly parse as one of these, ask which mode is meant before
+If `$ARGUMENTS` doesn't clearly parse as one of these, ask which mode the candidate means before
 proceeding.

@@ -1,0 +1,36 @@
+{
+  "_comment": "Intake screens applied by scripts/screen.py. Companies for the contact-center screen live in data/exclusions.md (company-level passes); this file holds the role-level keyword and title rules. Edit here, not in prose.",
+  "seniority": {
+    "_comment": "Discard = create no row. Flag = keep the row but mark for a human glance (documented false-positive classes: bank pay-grade VP, department names containing a rank word, defense-contractor '(Director)' suffix). Tier-drop = keep, score 5-8 lower.",
+    "discard_patterns": ["\\bdirector\\b", "\\bassociate director\\b", "\\bhead of\\b", "\\bmanaging principal\\b", "\\bvice president\\b", "\\bsvp\\b", "\\bevp\\b", "\\bcxo\\b", "\\bchief [a-z]+ officer\\b"],
+    "flag_patterns": ["\\bvp\\b", "\\bchief\\b", "\\bpresident\\b", "\\bpartner\\b"],
+    "keep_override_patterns": ["chief of staff office", "office of the (chief|cio|cto|ceo)"],
+    "parenthetical_rank": "\\((director|vp|vice president|avp|svp|principal|lead)\\)\\s*$",
+    "tier_drop_patterns": ["\\bprincipal\\b", "\\bsenior staff\\b", "\\bgroup (product manager|pm)\\b", "\\bstaff\\b"],
+    "pay_grade_companies": ["jpmorganchase", "jpmorgan chase", "jp morgan", "morgan stanley", "bny", "bny mellon", "goldman sachs", "citi", "citigroup", "bank of america", "wells fargo", "barclays", "deutsche bank", "ubs", "hsbc", "capital one", "truist", "pnc", "us bank", "state street", "fidelity", "vanguard", "blackrock"]
+  },
+  "contact_center": {
+    "_comment": "Hard screen added 2026-09-02 by the candidate. Role-level keywords; matches on title (and on the snippet/notes text when provided). Overrides the VoIP/Collab familiar-domains allowance.",
+    "keywords": ["contact center", "contact-center", "call center", "call-center", "ccaas", "ivr", "agent assist", "conversational ai", "conversational-ai", "acd", "dialer", "workforce engagement", "workforce management (wfm)", "customer service platform", "cx platform", "speech analytics", "quality management (qm)"]
+  },
+  "comp": {
+    "floor_annual": 150000,
+    "band_top_tier_drop": 200000,
+    "band_top_out_of_range": 220000,
+    "hard_floor_sources": ["LinkedIn", "Dice"],
+    "hours_per_year": 2080,
+    "days_per_year": 260
+  },
+  "recency": {
+    "indeed_max_age_days": 5
+  },
+  "standout": {
+    "match_threshold": 80
+  },
+  "age_out": {
+    "_comment": "Standing-queue lifecycle policy read by scripts/age_out.py, not the intake screen above. Added 2026-09-10 when the one-off hybrid pass (runs/2026-09-10/ageout_hybrid_result.json) was productized into funnel-review step 5.",
+    "aged_out_days": 60,
+    "borderline_days": 45,
+    "borderline_match_floor": 70
+  }
+}

@@ -1,8 +1,11 @@
 {
   "name": "job-search-agent",
-  "version": "0.1.0",
-  "description": "A personal job search agent template — Notion-backed pipeline tracking, JD-verified application prep (apply-assist), and the daily/weekly automations that keep it running, packaged as one plugin. Fork this and fill in context/ with your own details before use.",
+  "version": "0.2.4",
+  "description": "A scheduled, self-auditing job search: gated discovery into a Notion pipeline, inbox reconciliation, and ready-to-submit application packets three times a week. You do the last mile.",
   "author": {
-    "name": "YOUR NAME"
-  }
+    "name": "Chris Pohlad-Thomas",
+    "url": "https://github.com/chrispt"
+  },
+  "homepage": "https://github.com/chrispt/job-hunt-autopilot",
+  "license": "MIT"
 }

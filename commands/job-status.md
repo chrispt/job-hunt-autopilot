@@ -1,17 +1,21 @@
 ---
-description: Quick read of the job search pipeline — what's aging, what's due for follow-up, what to apply to today
+description: Quick read of the job search pipeline, packets ready, what's aging, what's due for follow-up, what to apply to today
 ---
 
-Give a quick, conversational status read on the Notion Job Search Pipeline (schema in
-`context/notion-schema.md`) without running a full sweep or funnel review:
+Give the candidate a quick, conversational status read on their Notion Job Search Pipeline (schema and
+saved views in `context/notion-schema.md`) without running a full sweep or funnel review.
+Use the saved views (quota-exempt) and `scripts/notion_rows.py` to compact the results:
 
-- Counts by Status (To Apply / Applied / Interviewing / Offer).
-- The aging "To Apply" queue, ranked per the **Queue ranking convention** in
-  `context/notion-schema.md` (same ranking `skills/daily-sweep` Part 3 produces).
-- Any `Follow Up Date` that has arrived or passed.
-- Anything that looks like it's been sitting too long (Applied 21+ days with no reply).
+- **Packets ready** ("⚙ Packets ready" view): roles with a tailored packet waiting for them
+  to submit, with days since the packet was built.
+- **Outreach owed** ("⚙ Outreach owed" view): applications with no outreach recorded.
+- **Top 3 to apply** from the "⚙ Ranked queue" view (already floor-gated, Priority then
+  oldest), then the ≥ 70% tier.
+- **Follow-ups due** from "⚙ Applied open": Follow Up Date on or before today; Applied 21+
+  days with no reply (propose Ghosted, low confidence).
+- Counts by Status (To Apply / Applied / Interviewing / Offer / Rejected / Withdrawn /
+  Ghosted / Aged Out) if a single SQL aggregate is affordable; otherwise skip the counts
+  rather than paging views for them.
 
-This is a read-only snapshot — don't change any Notion pages from this command. If the
-candidate wants to act on what you find (apply to something, mark a role ghosted, run the
-full sweep), hand off to the relevant skill (`apply-assist`, `daily-sweep`) rather than doing
-it inline here.
+Read-only: change nothing from this command. To act on anything, hand off to
+`apply-assist` (or `apply-prep`), `daily-sweep`, or `referral-match`.

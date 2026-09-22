@@ -1,70 +1,94 @@
-# job-search-agent (template)
+# job-search-agent (community edition)
 
-A Claude Code plugin that automates the mechanical parts of a job search — board discovery,
-Notion pipeline tracking, email status reconciliation, JD-verified application prep, and a
-weekly funnel review — while keeping attestation, salary/EEO fields, logins, outreach
-sending, and the final Submit button in the candidate's hands.
+A Claude Code plugin that runs a job search the way a disciplined assistant would: it finds
+roles on a schedule, screens them against rules you wrote down, keeps a Notion pipeline
+honest, reconciles your inbox, builds ready-to-submit application packets three times a
+week, and audits its own runs from the session transcript so it cannot overstate what it did.
+You do the last mile: login, attach, attestation, Submit, and any outreach.
 
-**This is a fork-and-customize template, not a drop-in tool.** It was built for one person's
-job search and generalized afterward; every piece of personal data (name, resume path,
-Notion database, target roles, scoring rules) has been pulled into a handful of files you're
-expected to edit. Read [`SETUP.md`](SETUP.md) before doing anything else — it walks through
-exactly what to fill in and in what order.
+It was built for one job seeker's search over four months and then generalized. Every rule
+in it exists because something went wrong once; `context/incident-log.md` keeps the stories
+(names removed) so you can judge whether a rule applies to you.
 
-## What's inside
+**Free to use, pay what you want. If it helps you land something, see `DONATING.md`.**
 
-| Piece | What it does |
-|---|---|
-| `agents/job-agent.md` | The conversational front door. Talk to it about the pipeline, what to apply to, or the week's results — it routes to the right skill. |
-| `skills/apply-assist/` | Takes a "To Apply" role through JD re-verification, resume/cover-letter tailoring, outreach drafts, and ATS form-fill up to Submit. |
-| `skills/daily-sweep/` | Job-board discovery, email reconciliation, and an aging-queue/follow-up/ghosting report. |
-| `skills/referral-match/` | Optional: matches your professional network against open pipeline roles and drafts the warm referral ask; for roles with no warm contact, can surface a budget-capped cold-referral shortlist. Delete if you don't have an exportable network roster. |
-| `skills/funnel-review/` | Weekly funnel metrics and a rejection-pattern analysis that proposes concrete scoring/exclusion adjustments; can also re-screen the standing queue when a screening rule changes, and run a periodic market-calibration check. |
-| `commands/apply.md`, `commands/sweep.md`, `commands/job-status.md`, `commands/referral-match.md` | Slash-command shortcuts into the skills above. |
-| `context/` | Shared reference the agent and skills all read from — candidate profile & scoring strategy, environment/tool bindings, accuracy rules, the Notion schema, and ATS form-fill learnings. Single source of truth, so rules never drift between files. **This is where your personalization lives.** |
-| `data/exclusions.md` | Companies deliberately passed on after real evaluation — checked before any discovery or apply-assist effort. Starts empty. |
-| `data/connections-README.md`, `data/refer-me.md` | Optional, for `referral-match`: documents the network-export contract and why a cold-referral tool (if you use one) should stay manual. Delete alongside `referral-match` if unused. |
+Built by Chris Pohlad-Thomas (https://github.com/chrispt) during his own search. Source and issues:
+https://github.com/chrispt/job-hunt-autopilot
 
-## Required connectors (not bundled — see `.mcp.json`)
+## What you need
 
-This plugin depends on remote MCP connectors it cannot ship, because a plugin's `.mcp.json`
-only launches local stdio servers, and these are all OAuth-based:
-
-- **Notion** — the pipeline database (you'll create your own — schema in
-  `context/notion-schema.md`)
-- **Google Drive** (or wherever your resume lives) — live master-resume reads
-- **Gmail** — read-only email reconciliation
-- **A job-board search MCP** (Indeed, Dice, or similar) — discovery
-- **Chrome MCP** (with Playwright and the Claude Chrome extension as fallbacks) — JD reading
-  and ATS form-fill
-
-Connect each via claude.ai connector settings, or `claude mcp` / `/mcp` in an interactive
-Claude Code session, before relying on the skills that need them. `job-agent` will tell you
-plainly if one is missing rather than guessing.
+- Claude Code (desktop app or CLI) with scheduled tasks
+- Python 3.11 or newer (no third-party packages)
+- Connectors you connect yourself: Notion (required), Gmail (required for status updates and
+  LinkedIn alert digests), an Indeed job-search MCP (recommended), Google Drive (optional),
+  the Claude in Chrome extension (recommended for LinkedIn postings and ATS forms)
+- A Notion workspace (free plan works; the plugin routes routine reads through saved views,
+  which are not quota-limited)
 
 ## Install
 
-```
-claude --plugin-dir "/path/to/your/fork/of/job-search-agent"
-```
+1. Clone this repo somewhere permanent.
+2. Register it as a plugin marketplace and install, either from GitHub:
+   `/plugin marketplace add chrispt/job-hunt-autopilot`, or from the clone:
+   `/plugin marketplace add <path to your clone>`; then
+   `/plugin install job-search-agent@job-hunt-autopilot`.
+3. Run `/setup-job-search`. It checks connectors and Python, creates the Notion database and
+   its saved views, writes the ids into `data/notion.json`, and walks you through your
+   profile (`context/candidate-profile.md`), accuracy rules, search queries
+   (`data/queries.json`), screens (`data/screens.json`), and the three scheduled tasks.
+4. Run `/sweep` once with you watching, then `/apply-prep 1`.
 
-Or register your fork as a personal plugin marketplace and `/plugin install job-search-agent`
-from any Claude Code session.
+## How a day runs
 
-## Scheduled tasks (live outside this plugin)
+1. **Weekday mornings, `daily-sweep`.** Takes a lock, refreshes two date-windowed views,
+   reads the queue and applied views, and decides a discovery gate from one SQL aggregate:
+   under the threshold of fresh above-floor roles → full mode (every query × location plus
+   every LinkedIn alert digest); over it → light mode (digests plus a few core Remote
+   searches). `scripts/discover.py` turns the session transcript into screened, deduped
+   candidates; the model scores and creates rows; `scripts/audit.py` prints a coverage block
+   derived from the transcript. Then email reconciliation, then the report: packets ready,
+   standouts, Top 3, outreach owed with drafts, follow-ups due.
+2. **Mon/Wed/Fri, `apply-prep`.** Reads the ranked queue, prefers standouts (high score or a
+   company where you know someone), reads the JD through a ladder that works unattended,
+   re-scores, gates, tailors your resume and cover letter from your master file, makes PDFs,
+   drafts outreach, writes a manifest with a "claims changed vs master" section, and sets
+   `Packet Ready`.
+3. **You:** open the packet folder, apply, tell the agent it went out (`/apply <Company>`),
+   send the outreach you approve.
+4. **Fridays, `funnel-review`.** Funnel metrics, packets built vs submitted, a coverage audit
+   of the week's sweeps, rejection patterns, a standing-queue re-screen when a rule changed,
+   and the pipeline snapshot refresh.
 
-Claude Code plugins can't bundle scheduled tasks — they live in
-`~/.claude/scheduled-tasks/`. Each one is a thin wrapper that just invokes the matching
-plugin skill, so the actual logic lives once, here. Set up your own wrappers pointing at
-your fork; see `SETUP.md`.
+## What is in the box
 
-| Suggested task | Suggested schedule | Invokes |
-|---|---|---|
-| daily-job-sweep | Weekdays morning | `job-search-agent` skill `daily-sweep` |
-| weekly-funnel-review | Once a week | `job-search-agent` skill `funnel-review` |
+| Piece | What it does |
+|---|---|
+| `skills/` | `daily-sweep`, `apply-prep`, `apply-assist`, `referral-match`, `funnel-review`, `cert-nudge`, `setup` |
+| `commands/` | `/sweep`, `/apply`, `/apply-prep`, `/job-status`, `/referral-match`, `/setup-job-search` |
+| `agents/job-agent.md` | The conversational front door |
+| `scripts/` | Transcript audit, discovery pipeline, digest parser, intake screen, dedup, row compaction, lock, snapshot merge; tests in `scripts/tests` |
+| `context/` | Your profile and rules (templates), Notion schema and views, ATS learnings, the incident log |
+| `data/` | Queries and gate, screen rules, exclusions, Notion ids (gitignored) |
+| `scheduled-tasks/` | The three wrapper prompts the setup skill installs |
 
-## The automation boundary
+## Principles this tool holds
 
-The canonical statement lives at the bottom of `context/ats-learnings.md`: attestation,
-self-ID, salary/EEO fields, logins, sending outreach, and the final Submit always stay with
-the candidate. This plugin never crosses that line — keep it that way if you extend it.
+- **Nothing submits, sends, or fabricates.** The automation boundary is in
+  `context/ats-learnings.md`. Attestations, self-ID, salary fields, logins and the Submit
+  button are yours.
+- **Coverage claims come from the transcript,** never from the model's own summary.
+- **Rules live in data files** (`queries.json`, `screens.json`, `exclusions.md`), not in prose.
+- **The daily output is something you can act on in ten minutes,** not a longer list.
+- **Only TOS-clean sources:** job-board MCPs and your own LinkedIn alert emails and
+  connections export. No scrapers.
+
+## Privacy
+
+Everything runs inside your own accounts and machine. `data/notion.json`, the pipeline
+snapshot, run files, and locks are gitignored. Your profile and rules are files you own;
+do not publish a fork without scrubbing them.
+
+## License
+
+MIT. See `LICENSE`. Donations welcome, never required: `DONATING.md`. Release notes in
+`CHANGELOG.md`; the product page text is `docs/LISTING.md`.

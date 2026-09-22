@@ -1,66 +1,60 @@
 # Candidate Profile & Job-Search Strategy (single source of truth)
 
-<!-- TEMPLATE — this whole file is an example. Replace every fact and strategy line below
-with your own before using this plugin. Keep the two-layer structure; it's what keeps
-"what's true" separate from "what I'm optimizing for," and lets skills reference one file
-instead of restating any of it. -->
+This file is the ONLY place your facts, scoring guardrails, hard screens, and salary floor are
+defined. Every skill reads it instead of restating any of it. Fill it in once; the `/setup-job-search`
+command walks you through it. Two layers:
 
-This file is the ONLY place candidate facts, scoring guardrails, and the salary floor are
-defined. Skills reference this file instead of restating any of it. Two layers:
+1. **Facts**: roles, dates, education, certifications. Your master resume wins on any conflict
+   (path and read recipe in `config.md`); this section is the fallback when the resume cannot
+   be read and is where you record things the resume does not carry (mailing address, phone).
+2. **Strategy**: target roles, scoring guardrails, hard screens, salary floor, location rules.
+   Not in the resume; always applied on top of the resume facts.
 
-1. **Facts** (roles, dates, education, certs) — the live master resume wins on any conflict
-   (read it per the recipe in `config.md`); this section is the fallback when your resume
-   storage is unavailable, and should be kept roughly in sync with the real resume.
-2. **Strategy** (pivot targets, scoring guardrails, salary floor, location rules) — NOT in
-   the resume; always applied on top of the live resume facts.
+## Facts (fallback snapshot; the resume wins)
 
-## Facts (fallback snapshot — resume wins)
+- **Name**: <Your Name>, <City, ST>, <you@example.com>, <linkedin.com/in/your-handle>
+- **Mailing address (used on ATS forms)**: <street, city, ST, zip>. Phone <digits>. Recording
+  it here is what lets the agent fill address fields without asking each time; never let it
+  invent one if this line is missing.
+- **Current / most recent role**: <Company> (<start> to <end>): <Title>. One or two lines on
+  what you actually owned versus supported. Be exact about scope; every generated document
+  inherits this framing (see `accuracy-rules.md`).
+- **Earlier roles**: <Company> (<dates>): <Title>. Repeat as needed.
+- **Education**: <degree, school, year>; anything in progress with expected completion.
+- **Certifications**: <exact names as they appear on the certificate>.
 
-_Example shape — replace with your own:_
+## Strategy (always applied; not in the resume)
 
-- **Your Name** — City, State · you@example.com · linkedin.com/in/you
-- **Mailing address / phone for ATS forms (optional):** some ATS forms require a mailing
-  address and phone number as required fields, not just a resume upload. If you're
-  comfortable having these entered automatically, record them here once and say so
-  explicitly — otherwise leave this blank and expect to be asked each time one is needed.
-  Never let a skill invent an address or phone number if this line is blank or stale.
-- **Most Recent Employer** (start–present): Title (date range), promoted from/started as
-  ... . What you actually own vs. don't (e.g., "drives adoption strategy, not core
-  product-roadmap ownership" — be precise here, this framing gets reused verbatim in
-  generated documents).
-  - **If a promotion happened within this employer**, decide up front whether the tenure
-    clock for a given qualification (e.g. "years in customer success") should span both
-    roles or just the current one, and say so explicitly here. A promotion within one
-    employer is continuous tenure in the broader function, not a restart — getting this
-    wrong can understate you against a posting's stated experience minimum.
-- **Prior Employer** (date range): Title(s) and focus area.
-- **Education:** degrees, in-progress programs with expected completion.
-- **Certifications:** exact names as they appear on your real resume — don't paraphrase
-  cert names, ATS keyword-matching and interviewers both care about exact wording.
+- **Target roles** (the "pivot targets" the sweep scores against): e.g. AI Product Manager,
+  Technical PM, Customer Success Leader, Enablement. Say which are primary and which are
+  acceptable in familiar domains only.
+- **Hard screens** (create no row at all; role-level keywords live in `data/screens.json`,
+  company-level passes in `data/exclusions.md`): e.g. "no contact-center deployment roles",
+  "no roles requiring an active security clearance I do not hold".
+- **Scoring guardrails**: where you are strongest (score up) and which stated minimums have
+  rejected you before (score down). Example shape: "PM tenure is ~3 years inside a 20-year
+  career, so postings gated on 8+ years of dedicated PM experience drop a tier; customer
+  success tenure is 7 years continuous, so a 7-10 year CS minimum is cleared, not a stretch."
+- **Experience gate thresholds** (used by apply-assist step 5): stated minimum years of the
+  primary discipline at or above <N> = full tier drop; <N-3 to N-1> years = neutral when the
+  posting is framed in transformation / change-management language, tier drop when framed as
+  dedicated ownership; stated people-management minimum at or above <M> years = tier drop.
+  An unstated minimum is never a fail.
+- **Seniority screen**: titles the sweep discards outright (Director, Head of, VP, ...) and
+  titles that only drop a tier (Principal, Staff). Patterns live in `data/screens.json`; put
+  the reasoning here (for most candidates: Director-and-above postings screen on
+  people-management scope that an individual contributor cannot show).
+- **Location modifier**: home base, remote preference, which metros carry no penalty, how many
+  points hybrid/on-site elsewhere loses. Do not filter by location; score it.
+- **Salary floor**: <$N base>. Below-floor postings are flagged as bridge options, never
+  silently scored on fit; `apply-prep` builds no packet for a clearly below-floor posting
+  without your say-so. Sources with a hard intake filter (LinkedIn digests) discard them.
+- **Standout rule**: a new role scoring at or above <80>%, or at a company where you know
+  someone (connections roster, `config.md`), jumps the queue for the next packet run.
 
-## Strategy (always applied — not in the resume)
+## Learning roadmap (read by cert-nudge)
 
-_Example shape — replace with your own:_
-
-- **Pivot targets:** the 2-4 role families you're actually aiming for, and how they build on
-  your background. Note any adjacent role type that's OK in familiar sub-domains but risky
-  in unfamiliar ones (e.g. "X roles are fine in domain A, avoid domain B where I'm not
-  current").
-- **Scoring guardrails:** where you're strongest, and any screen that reliably rejects you
-  (e.g. a tenure-length gate) so discovery can score those roles lower rather than repeatedly
-  wasting effort on them. Note any domain where your knowledge is adjacent rather than
-  practitioner-level, so generated documents don't overclaim it.
-- **Experience gate (structural screens):** if postings in your target roles commonly state
-  a hard minimum (years of experience in a role, years of people management, a specific
-  required certification), name the exact thresholds here so `apply-assist` can check the
-  posting's stated number against them and drop a tier when it's met or exceeded — rather
-  than relying on a vague impression of "this looks senior." Treat an **unstated** minimum as
-  no signal at all; only an explicit number at or above your threshold should trigger the
-  drop. A warm referral or other differentiator can still override this gate — say so if you
-  want that judgment call available.
-- **Location modifier:** your base location, relocation willingness, and how remote vs.
-  hybrid vs. on-site should affect scoring (e.g. "remote = no penalty; hybrid outside my
-  metro = score N points lower").
-- **Salary floor:** your real floor. Postings below it shouldn't be silently scored on fit
-  alone — decide whether they get flagged as a bridge option or discarded outright, and say
-  so here so `daily-sweep` and `apply-assist` apply it consistently.
+Ordered list of courses / certifications you are working through, with status:
+1. ✅ <done>
+2. 🔄 <in progress>
+3. ⏭️ <next>

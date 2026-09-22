@@ -14,9 +14,10 @@ hand-made 0.1.0 template. This tree replaces its contents without rewriting its 
    the push is a plain fast-forward (no force push).
 2. `git push -u origin master --tags`. Update the repository description on GitHub to match
    `.claude-plugin/plugin.json`.
-3. Enable GitHub Sponsors on the account (Settings → Sponsorship) so the link in
-   `DONATING.md` resolves; add a one-time tier. If you prefer Ko-fi or Buy Me a Coffee,
-   add the link to `DONATING.md` in the source templates and rebuild.
+3. Donations go through Buy Me a Coffee (`DONATING.md` and `.github/FUNDING.yml`). Open
+   https://buymeacoffee.com/chrispt once per release to confirm it still resolves. If GitHub
+   Sponsors is ever approved, add `github: chrispt` to `FUNDING.yml` in the source templates
+   and rebuild.
 4. Create the GitHub release for the current tag and attach
    `job-search-agent-community-<version>.zip` (built by `build_community.py --zip`).
 5. Paste `docs/LISTING.md` as the release description and, if you list it elsewhere

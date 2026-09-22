@@ -31,7 +31,7 @@ goes to a human. Nothing here sends or submits on your behalf.
 
 ## What you get
 
-A Claude Code plugin (skills, commands, an agent, nine Python scripts with tests), a setup
+A Claude Code plugin (skills, commands, an agent, eleven Python scripts with tests), a setup
 skill that creates the Notion database and views for you, templates for your profile and
 rules, wrapper prompts for the scheduled tasks, and an incident log that explains why every
 rule exists.
@@ -53,8 +53,8 @@ degrades to .docx elsewhere.
 
 It is opinionated: it assumes a Notion pipeline, a master resume you keep truthful, and that
 you will do a ten-minute last mile per application. It is not a mass-apply bot and will not
-become one. ATS platforms change; the ATS notes cover Greenhouse, Workday, Oracle HCM, iCIMS
-and Lever as of September 2026.
+become one. ATS platforms change; the ATS notes cover Greenhouse, Workday, Oracle HCM and
+iCIMS as of September 2026.
 
 ## Support and donations
 

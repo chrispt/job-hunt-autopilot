@@ -22,6 +22,16 @@ command walks you through it. Two layers:
 - **Earlier roles**: <Company> (<dates>): <Title>. Repeat as needed.
 - **Education**: <degree, school, year>; anything in progress with expected completion.
 - **Certifications**: <exact names as they appear on the certificate>.
+- **Standing application answers (optional; the agent fills only what you record here):**
+  - Work authorization: <Yes/No> · Visa sponsorship needed now or later: <Yes/No>
+  - Felony conviction: <No / leave blank to answer yourself each time>
+  - Voluntary self-ID, if you want it filled for you: Gender <...> · Hispanic/Latino <...> ·
+    Race <...> · Veteran status <...> · Disability status <...> · Pronouns <...>
+  - Marketing email / SMS opt-ins: <No>
+  - The agent matches each form's own option wording and verifies every selection. Anything
+    left blank here, and any question not listed (for example "have you ever been fired"),
+    stays yours on every form. Record a disability answer only as the option you choose;
+    never write a condition into this file.
 
 ## Strategy (always applied; not in the resume)
 
@@ -49,6 +59,10 @@ command walks you through it. Two layers:
 - **Salary floor**: <$N base>. Below-floor postings are flagged as bridge options, never
   silently scored on fit; `apply-prep` builds no packet for a clearly below-floor posting
   without your say-so. Sources with a hard intake filter (LinkedIn digests) discard them.
+- **Salary-field rule** (delete it to keep salary fields to yourself): the agent proposes the
+  answer and always flags it. Example: with a posted band, a minimum base at or a little above
+  the band's midpoint and never below <your floor>; with no band, lead with <your floor> to
+  <floor + ~$20k> base, "flexible depending on the full compensation and benefits package".
 - **Standout rule**: a new role scoring at or above <80>%, or at a company where you know
   someone (connections roster, `config.md`), jumps the queue for the next packet run.
 

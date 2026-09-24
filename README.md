@@ -4,7 +4,8 @@ A Claude Code plugin that runs a job search the way a disciplined assistant woul
 roles on a schedule, screens them against rules you wrote down, keeps a Notion pipeline
 honest, reconciles your inbox, builds ready-to-submit application packets three times a
 week, and audits its own runs from the session transcript so it cannot overstate what it did.
-You do the last mile: login, attach, attestation, Submit, and any outreach.
+When you apply, it fills the form (files attached), sets up the LinkedIn outreach, and reads
+the review back to you. You do the last mile: login, attestations, Submit, and Send.
 
 It was built for one job seeker's search over four months and then generalized. Every rule
 in it exists because something went wrong once; `context/incident-log.md` keeps the stories
@@ -53,8 +54,9 @@ https://github.com/chrispt/job-hunt-autopilot
    re-scores, gates, tailors your resume and cover letter from your master file, makes PDFs,
    drafts outreach, writes a manifest with a "claims changed vs master" section, and sets
    `Packet Ready`.
-3. **You:** open the packet folder, apply, tell the agent it went out (`/apply <Company>`),
-   send the outreach you approve.
+3. **You and the agent, `/apply <Company>`:** it fills the application from your profile and
+   standing answers, attaches the packet's PDFs, and stops at Submit for your check; after you
+   submit, it opens one LinkedIn tab per contact with the note typed in, and you click Send.
 4. **Fridays, `funnel-review`.** Funnel metrics, packets built vs submitted, a coverage audit
    of the week's sweeps, rejection patterns, a standing-queue re-screen when a rule changed,
    and the pipeline snapshot refresh.
@@ -74,8 +76,8 @@ https://github.com/chrispt/job-hunt-autopilot
 ## Principles this tool holds
 
 - **Nothing submits, sends, or fabricates.** The automation boundary is in
-  `context/ats-learnings.md`. Attestations, self-ID, salary fields, logins and the Submit
-  button are yours.
+  `context/ats-learnings.md`. The agent fills only what your profile and standing answers
+  cover; attestations, logins, uncovered questions, Submit and Send are yours.
 - **Coverage claims come from the transcript,** never from the model's own summary.
 - **Rules live in data files** (`queries.json`, `screens.json`, `exclusions.md`), not in prose.
 - **The daily output is something you can act on in ten minutes,** not a longer list.

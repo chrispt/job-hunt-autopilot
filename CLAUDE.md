@@ -28,6 +28,8 @@ scripts apply live in `data/queries.json`, `data/screens.json`, `data/exclusions
 
 ## Automation boundary (do not weaken this while extending the plugin)
 
-Canonical statement at the bottom of `context/ats-learnings.md`: attestation, self-ID,
-salary/EEO fields, logins, sending outreach, and the final Submit always stay with the user;
+Canonical statement at the bottom of `context/ats-learnings.md`: the agent fills only what the
+user's profile and standing answers cover, attaches files and sets up outreach; attestations,
+logins, consent agreements, uncovered questions, the final Submit and clicking Send always stay
+with the user;
 nothing here fabricates a qualification to clear a gate.

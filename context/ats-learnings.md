@@ -11,14 +11,24 @@ dead posting rather than an error.
 
 ## All ATS platforms
 
-- **Resume upload is yours.** The browser tools cannot attach arbitrary local files. The agent
-  points you at the packet folder and you click Attach.
+- **The agent attaches the resume and cover letter.** The Chrome extension's `file_upload`
+  rejects arbitrary local paths (your documents folder, Downloads) but accepts files in the
+  session's scratchpad directory. So the agent copies the role's PDFs from the packet folder
+  into `<scratchpad>/upload/<company>/` (generic filenames unchanged), uploads from there, and
+  verifies: the copy's sha256 matches the original, the cover letter's salutation names this
+  company, and the form shows both filenames. The packet folder stays the record. If you
+  upload a file yourself, the agent confirms it is this role's version by its content.
 - **The uploaded filename never contains the company name.** Generic filename, company in the
   folder (see `config.md`).
 - **Check accepted file types before staging.** Some ATSes accept PDF only; a PDF is built
   alongside every `.docx` for this reason.
-- **Always yours:** truthfulness / anti-AI attestations, voluntary self-identification,
-  pronouns, salary fields, EEO disclosures, account creation and login, and the final Submit.
+- **Fill what your standing answers cover, leave the rest.** Voluntary self-ID, EEO,
+  disability and pronouns are filled only from the "Standing application answers" you
+  recorded in `candidate-profile.md`; if that section is empty, those fields stay yours.
+  Salary-expectation text uses the salary-field rule there and is always called out for your
+  check. **Always yours:** truthfulness / anti-AI attestations and certifications (including
+  ones you sign by typing your name), account creation and login, consent/privacy agreements,
+  any question your standing answers don't cover, and the final Submit.
 - **Diff parsed work history against your master resume** before advancing a step. Resume
   parsers merge consecutive roles at one employer and date the later title from the earlier
   start, which silently inflates tenure. Where the ATS stores a candidate profile, fix it
@@ -57,6 +67,27 @@ not a safe trade: on Workday an application cannot be amended after Submit.
 - Dropdowns are React selects: `form_input` sets text without committing. Click the field,
   type the option, press Return. A value is committed when the field shows a clear (✕) button.
 - Stale "This field is required" messages linger after early validation; they clear on Submit.
+- **Refs go stale after a file upload.** The form re-renders, so clicks and typing by `ref`
+  land nowhere with no error. Focus the field by its stable id through `javascript_tool`
+  (`document.getElementById('first_name').focus()`), then type real keystrokes, and read the
+  value back by id.
+- **React selects by id:** focus the input, press a real Down key to open it, then click the
+  option inside the element named by the input's `aria-controls`. Synthetic key events do not
+  open the list. Options can be whole sentences, so match on a prefix.
+- **School lookups are async:** type a short term, wait a few seconds, then click the option.
+- **Employer-hosted wrappers can hang.** When a company's own apply page (a wrapper around
+  Greenhouse) never finishes loading, the embed form is the same requisition and loads
+  directly: `https://boards.greenhouse.io/embed/job_app?for=<board>&token=<job id>`.
+
+## Phenom front ends (university and enterprise careers sites over Workday)
+
+- The resume-parse upload and some Next clicks can freeze the browser tab for minutes. Wait,
+  retry, and if it stays dead, reload.
+- `element.focus()` may not take keystrokes. Scroll the field to the centre with
+  `scrollIntoView({block:'center'})`, then click its screen coordinates and type.
+- Month/year pickers only accept clicks on the month grid, not typing.
+- The Review page may omit the questions and voluntary-disclosure steps; verify those on
+  their own steps.
 
 ## Workday (`*.myworkdayjobs.com`)
 
@@ -86,8 +117,13 @@ not a safe trade: on Workday an application cannot be amended after Submit.
 
 ## Post-application outreach (LinkedIn)
 
-- Draft, never auto-send: one message each to a likely hiring manager, a recruiter, and a
-  director connected to the team. Presented to you for review.
+- Set up, never send: one message each to a likely hiring manager, a recruiter, and a
+  director connected to the team. After you confirm the application is submitted, the agent
+  opens one browser tab per contact, clicks Connect (often under More), clicks Add a note,
+  types the note and checks the character counter. You click Send in each tab.
+- The invitation dialog is usually missing from the accessibility tree, so the agent works it
+  by screenshot and coordinates. Glance at each profile's Experience first: it sometimes shows
+  the person runs the exact program, which is worth one line in the note.
 - **Read the actual thread before drafting.** A blank Outreach Sent field is not proof nothing
   was sent; re-introducing yourself to someone you already messaged reads worse than silence.
 - 1st-degree connections: a normal message, no limit. 2nd/3rd degree: a connection-request
@@ -98,7 +134,16 @@ not a safe trade: on Workday an application cannot be amended after Submit.
 
 ## Automation boundary (MANDATORY; the canonical statement)
 
-Maximize automation up to, not through, these; you always do them: the truthfulness /
-anti-AI attestation, voluntary self-ID, pronouns, salary fields, EEO disclosures, account
-creation and login, sending any outreach, and the final Submit. Nothing in this plugin clicks
+**The agent fills, then you check:** every form field your recorded facts and standing
+answers cover, including attaching the resume and cover letter, self-ID/EEO/pronouns (only
+from `candidate-profile.md`), and proposed salary-expectation text (always flagged). It also
+sets up LinkedIn outreach, one tab per contact, and reads the Review page back to you.
+
+**You always do:** the final Submit; clicking Send on every message; any truthfulness, anti-AI
+or certification attestation; account creation, login and passwords; consent/privacy
+agreements; and any question your standing answers don't cover. Nothing in this plugin clicks
 Submit or Send on your behalf, and nothing fabricates a qualification to clear a gate.
+
+If you would rather keep self-ID, EEO and salary fields to yourself, leave the standing
+answers section in `candidate-profile.md` empty and delete its salary-field rule; the agent
+then leaves those fields alone.

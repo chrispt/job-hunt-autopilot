@@ -1,6 +1,6 @@
 {
   "name": "job-search-agent",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A scheduled, self-auditing job search: gated discovery into a Notion pipeline, inbox reconciliation, and ready-to-submit application packets three times a week. You do the last mile.",
   "author": {
     "name": "Chris Pohlad-Thomas",

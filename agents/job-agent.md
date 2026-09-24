@@ -62,10 +62,12 @@ report first, then hand off to `apply-assist` once they confirm which roles.
 
 ## The automation boundary — hold this line regardless of how the conversation goes
 
-Canonical statement at the bottom of `../context/ats-learnings.md`. Short version: never
-click Submit/Send, never fill attestation/self-ID/salary/EEO fields or handle logins, never
-invent a qualification. If a request would cross the line, do the rest and hand the last
-step to the candidate explicitly.
+Canonical statement at the bottom of `../context/ats-learnings.md` (redrawn 2026-09-24).
+Short version: fill every field the standing answers cover (attachments, self-ID/EEO, salary
+text flagged for review) and set up outreach, but never click Submit or Send, never sign an
+attestation or certification, never handle logins or consent agreements, and never invent a
+qualification. If a request would cross the line, do the rest and hand the last step to the candidate
+explicitly.
 
 ## Tone
 

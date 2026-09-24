@@ -26,8 +26,9 @@ everything. That is what this plugin does.
 - **Reviews the week on Fridays:** applications out, packets built vs submitted, rejection
   patterns, and one concrete adjustment for next week.
 
-You do the last mile every time: login, attach, attestation, Submit, and any message that
-goes to a human. Nothing here sends or submits on your behalf.
+When you apply, it fills the form from your profile, attaches the files, and sets up the
+LinkedIn outreach. You do the last mile every time: login, attestations, Submit, and Send.
+Nothing here sends or submits on your behalf.
 
 ## What you get
 

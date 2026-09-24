@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.5 (2026-09-24)
+
+`apply-assist` now does most of the last mile with you, and stops at Submit and Send.
+
+- **Attaches the resume and cover letter itself.** The browser upload tool accepts files in
+  the session's scratchpad folder, so the agent copies the packet's PDFs there, uploads them,
+  and verifies them (sha256 against the originals, cover-letter salutation, filenames read
+  back from the form).
+- **Fills self-ID, EEO and pronoun fields only from answers you record** in the new optional
+  "Standing application answers" section of `candidate-profile.md`, and proposes
+  salary-expectation text from an optional salary-field rule. Leave either blank and those
+  fields stay yours.
+- **Sets up LinkedIn outreach after you submit:** one tab per contact with Connect, Add a note
+  and the note typed in, so you only click Send.
+- Reads the Review page back before handing over Submit.
+- ATS notes: Greenhouse refs going stale after an upload (focus by id instead), the Greenhouse
+  embed URL for employer wrappers that hang, and Phenom careers sites that freeze on resume
+  parsing.
+- The automation boundary is restated to match: the agent never clicks Submit or Send, never
+  signs an attestation, and never answers a question your recorded answers don't cover.
+
 ## 0.2.4 (2026-09-22)
 
 First release of the generated edition in this repository. It replaces the hand-made 0.1.0

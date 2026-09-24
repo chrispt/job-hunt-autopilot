@@ -53,8 +53,9 @@ Board quirks: Indeed has no posted-date parameter, so `screen.py` post-filters o
 
 Save to `<your documents folder>\<Company> - <Role>\`. The company name never appears in the
 filename: the uploaded file is what the employer receives. A PDF is generated alongside each
-`.docx` at build time (some ATSes accept PDF only). The attach step cannot be automated by the
-browser tools; you attach from the folder when the file picker opens.
+`.docx` at build time (some ATSes accept PDF only). At form-fill time the agent attaches them
+from a per-session scratchpad copy, verified against these originals (see `ats-learnings.md`);
+this folder stays the record.
 
 ## LinkedIn connections roster
 

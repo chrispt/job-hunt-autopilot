@@ -34,7 +34,9 @@ run the sweep aggregate SQL once with the data source substituted.
 
 Walk the user through `context/candidate-profile.md`: facts, target roles, hard screens,
 scoring guardrails, experience-gate thresholds, seniority screen reasoning, location modifier,
-salary floor, learning roadmap. Then `context/accuracy-rules.md` ("your rules" sections).
+salary floor, learning roadmap. Ask whether they want standing application answers (work
+authorization, sponsorship, self-ID, pronouns) and the salary-field rule filled in; both are
+optional, and anything left blank stays theirs on every form. Then `context/accuracy-rules.md` ("your rules" sections).
 Then `data/queries.json` (target titles and locations; recommend they create a daily LinkedIn
 job alert per query, delivered by email). Then `data/screens.json` (adjust seniority discard
 patterns, contact-center keywords or remove them, comp thresholds).
@@ -57,7 +59,7 @@ present and confirm a packet folder, manifest, and the Packet Ready date land.
 
 ## 6. Privacy and the automation boundary
 
-Remind the user: everything runs in their own accounts; nothing here sends, submits, or
-fabricates; `data/notion.json`, the pipeline snapshot, and their profile are personal and
+Remind the user: everything runs in their own accounts; the agent fills forms and sets up
+outreach only from what they recorded, and nothing here sends, submits, or fabricates; `data/notion.json`, the pipeline snapshot, and their profile are personal and
 gitignored in this edition. Point them at `context/ats-learnings.md` for the canonical
 boundary statement and at `DONATING.md` if the tool helps them.

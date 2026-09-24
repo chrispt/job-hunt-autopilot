@@ -106,9 +106,10 @@ role/company, one line on why it's a fit, a low-pressure ask — "would you be o
 / putting in a good word?"). No em dashes, no AI-report structure, no hyperbole-blacklist phrases,
 same truthfulness bar as a resume bullet.
 
-**Draft only. Never send.** This holds regardless of how well the candidate knows the person — sending
-outreach on their behalf isn't something this skill does autonomously, per the automation boundary
-in `../../context/ats-learnings.md`.
+**Never send.** This holds regardless of how well the candidate knows the person, per the automation
+boundary in `../../context/ats-learnings.md`. When the candidate is present and asks, the message may be
+set up in LinkedIn (typed into the thread, one tab per person) for them to click Send, the same
+way `apply-assist` step 14 handles outreach; unattended runs only draft.
 
 ## 7. Update Notion (lightweight — no schema changes)
 

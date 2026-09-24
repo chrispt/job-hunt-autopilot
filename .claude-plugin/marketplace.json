@@ -10,7 +10,7 @@
       "name": "job-search-agent",
       "source": "./",
       "description": "Scheduled, self-auditing job search: Notion pipeline, gated discovery, inbox reconciliation, application packets.",
-      "version": "0.2.4"
+      "version": "0.2.5"
     }
   ]
 }

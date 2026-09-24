@@ -108,15 +108,17 @@ posting that clearly rewards one) — same accuracy rules, cover-letter naming p
 
 **8. Save the documents** per the naming and folder rules in `../../context/config.md`
 (`<your documents folder>\<Company> - <Role>\`, generic filenames, PDF alongside each `.docx`;
-there is no Downloads staging copy). Deliver the files via `SendUserFile` so they are in chat;
-the candidate attaches from the folder when the ATS file picker opens.
+there is no Downloads staging copy). Deliver the files via `SendUserFile` so they are in chat.
+Phase B attaches them itself from a hash-verified scratchpad copy (step 11).
 
 **8a. Write `manifest.md`** in that folder: company, role, Job URL, JD rung used, re-scored
 Match % and the gate results, the `JD screen:` line, file list, outreach status, a
 **"Claims changed vs master"** section (every bullet rewritten, added, or removed, so the candidate
-reviews the delta rather than the whole document), and "What the candidate must do" (login/account,
-attach, attestation and self-ID fields, salary field, Submit, plus any platform trap from
-`../../context/ats-learnings.md`). Then set Notion `Packet Ready = today`, Resume URL and
+reviews the delta rather than the whole document), a "Form answers filled" list (the proposed
+salary text and any judgment calls, for the candidate's final check), and "What the candidate must do"
+(login/account, consent agreements, attestations and certifications, any screening question
+the standing answers don't cover, the final Submit, and clicking Send on outreach, plus any
+platform trap from `../../context/ats-learnings.md`). Then set Notion `Packet Ready = today`, Resume URL and
 Cover Letter URL (Drive links if `search_files` finds them; otherwise the folder path in
 Notes), and append `Packet built <date>: <folder>` to Notes.
 
@@ -124,8 +126,10 @@ Notes), and append `Packet built <date>: <folder>` to Notes.
 InMail-outreach convention in `../../context/ats-learnings.md`: identify the contacts via
 LinkedIn (Chrome extension search), write short messages in the candidate's own voice (plain
 conversational prose, no bold headers or bullet "findings" — this should read like the candidate
-wrote it, not like an AI report). These are drafts only; never send them. If a recruiter is
-identifiable, note their name/LinkedIn for step 12.
+wrote it, not like an AI report). Save them to `outreach.md` in the role folder with each
+note's measured character count and the contact's profile URL. They are set up in LinkedIn
+after submission (step 14); nothing here sends them. If a recruiter is identifiable, note their
+name/LinkedIn for step 13.
 
 If step 5 found a warm-referral match at this company, draft a **fourth** message: the
 referral ask itself, to the friend, per the "Referral / warm-outreach voice" rules in
@@ -160,6 +164,24 @@ patterns in `../../context/ats-learnings.md` (Greenhouse React-selects, Workday'
 trap and tenure-accuracy trap, and the "verify via accessibility tree, not screenshot"
 discipline that applies to any other ATS).
 
+**Fill as much as the form allows (standing instruction from the candidate, 2026-09-24: "fill as much
+in as you can (including attaching the appropriate cover letter and resume). I'll still do a
+final check before I click submit ... this update goes for everything"):**
+- **Attach the resume and cover letter yourself.** Copy the role's PDFs into
+  `<scratchpad>/upload/<company>/` (generic filenames), `file_upload` from there, then verify:
+  sha256 of the copy matches the Drive original, the cover letter's salutation names this
+  company, and the form shows both filenames. If the candidate uploads a file themselves, confirm it is
+  this role's version by content (the tailored bullet order).
+- **Self-ID, EEO, disability and pronouns** from the standing answers in
+  `../../context/candidate-profile.md`. Match each form's option wording; verify every
+  selection on a fresh read. A question those answers don't cover goes to the candidate.
+- **Salary expectation text** per the floor-anchored rule in `candidate-profile.md`, called
+  out explicitly in the handoff so the candidate checks it.
+- Marketing and SMS opt-ins: decline. "How did you hear about us": the source that matches the
+  link the candidate supplied (e.g. the company's career site); say which in the handoff.
+- Before handing over, read the Review page (or every step, where the Review page omits some)
+  back to the candidate in one summary: what was filled, what was a judgment call, what is left for them.
+
 **Work Experience and Education are always filled in when the form offers them, even when they
 are not marked required** (standing rule from the candidate, 2026-09-21; entries and the gate are in
 `../../context/ats-learnings.md`, section "Work Experience and Education: always fill them in").
@@ -170,20 +192,30 @@ the candidate the review is clean or handing them Submit. A submitted Workday ap
 amended.
 
 **12. Hold the automation boundary** (canonical statement at the bottom of
-`../../context/ats-learnings.md`): attestation, self-ID, pronouns, salary fields, EEO,
-account creation/login, and the final Submit stay with the candidate, always.
+`../../context/ats-learnings.md`, redrawn 2026-09-24): the final Submit, clicking Send on any
+outreach, attestations and certifications (including ones signed by typing their legal name),
+account creation/login, consent/privacy agreements, and screening questions the standing
+answers don't cover stay with the candidate, always.
 
 **13. Once the candidate confirms the application actually went through**, update the Notion page in
 one call: Status → "Applied", Date Applied = today, **Follow Up Date = today + 5 business
 days**, Resume URL / Cover Letter URL (Drive links), and Recruiter Name / Recruiter LinkedIn
 if step 9 identified one.
 
-**14. Surface the outreach drafts from step 9 again for final review.** Once the candidate confirms
-they're actually sent them (never assume), set the Outreach Sent date on the Notion page.
+**14. Set up the outreach from step 9 in LinkedIn, one Chrome tab per contact** (the candidate,
+2026-09-24: "I'll click send after each one is set up"; "open additional tabs that way we can
+do them all together"). In each tab: open the profile, re-check their Experience for anything
+that should change the note, click Connect (under More if needed), Add a note, type the note,
+and verify the counter by zooming on the dialog. Mechanics are in
+`../../context/ats-learnings.md`, "Post-Application Outreach". Then list the tabs and stop:
+the candidate clicks Send. Once they confirm they went out (never assume), set Outreach Sent on the
+Notion page and append a dated `## Outreach log` to the page body (contacts, profile URLs,
+character counts, anyone deliberately not contacted).
 
 ## Guardrails
 
-- The automation boundary in step 12 holds regardless of how routine the role looks.
+- The automation boundary in step 12 holds regardless of how routine the role looks. Filling
+  more fields (step 11) never extends to clicking Submit or Send.
 - Work Experience and Education are never left empty when the form has them (step 11). Check
   the Review page for "No Response" on either before calling a review clean.
 - Never invent a qualification to clear a structural gate — see `../../context/accuracy-rules.md`.

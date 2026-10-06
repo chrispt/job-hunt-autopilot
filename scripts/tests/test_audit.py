@@ -163,6 +163,28 @@ class ClassifyAlertSubject(unittest.TestCase):
         self.assertEqual(audit.classify_alert_subject(""), "digest")
 
 
+class SweepSkillProse(unittest.TestCase):
+    """2026-10-06: skills/daily-sweep/SKILL.md still listed "<Role> at <Company>" as a
+    single-job email to skip, contradicting the 2026-09-18 inversion in classify_alert_subject.
+    A sweep followed the prose, left five digests unopened, and audit.py reported INCOMPLETE."""
+    SKILL = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                         "skills", "daily-sweep", "SKILL.md")
+
+    def test_prose_does_not_call_role_at_company_a_single(self):
+        text = " ".join(open(self.SKILL, encoding="utf-8").read().split())
+        a = text.index("LinkedIn alerts.")
+        step2 = text[a:a + 1600]
+        self.assertIn("You may be a fit for", step2)
+        # the only single-job form; every other subject shape must be described as a digest
+        self.assertNotIn("single-job recommendation emails yet", step2)
+        # any "<Role> at <Company>" example must come after the sentence that makes it a digest
+        decl = step2.find("Every other subject is a multi-listing digest")
+        self.assertNotEqual(decl, -1)
+        i = step2.find("<Role> at <Company>")
+        if i != -1:
+            self.assertGreater(i, decl)
+
+
 class MetadataOnlyThreads(unittest.TestCase):
     def setUp(self):
         self.out = audit.audit(metadata_only(), queries(), mode="skip")

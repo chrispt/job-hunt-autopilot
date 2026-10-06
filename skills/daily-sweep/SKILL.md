@@ -54,10 +54,13 @@ as a deliberate skip, never as a fault.
    searches are independent: issue them as parallel batches.
 2. **LinkedIn alerts.** `search_threads` with `newer_than:4d in:anywhere from:<alert sender
    in config.md>` (`in:anywhere` is mandatory, see incident-log 2026-08-19; zero results is a
-   fault to investigate, not a quiet day). Open **every digest thread** (subject starting
-   with a curly quote or containing "job alert"/"new jobs") with `get_thread`,
-   `messageFormat: PLAIN_TEXT`. Do **not** open single-job recommendation emails yet ("You
-   may be a fit for…", "<Role> at <Company>"): their subject is screened first.
+   fault to investigate, not a quiet day). Open **every thread the search returns** with
+   `get_thread`, `messageFormat: PLAIN_TEXT`, except one shape. The only single-job email is a
+   subject that starts "You may be a fit for <Company>'s <Role> role"; it is screened by its
+   subject first and opened only if it survives. **Every other subject is a multi-listing
+   digest and must be opened**, whatever it looks like: "<Role> at <Company>", "<Company> is
+   hiring a <Role>", "<Role>: up to $NK/year", or a curly-quoted alert name. Their subject names
+   only the first of about six listings (incident-log 2026-09-18). When unsure, open it.
 3. **Run the pipeline once:** `$PY $S/discover.py --recent runs/<date>/recent.json`.
    It extracts every result from this session's transcript (you never retype results),
    screens them (`data/screens.json` + `data/exclusions.md`), collapses repeated postings,

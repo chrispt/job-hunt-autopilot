@@ -160,3 +160,28 @@ digest as a single loses listings silently, misreading a single as a digest cost
 `get_thread`. `candidates.py` keeps exactly one subject pattern, matching the classifier, so a
 subject can never be half-parsed. Covered by `ClassifyAlertSubject` in `scripts/tests/test_audit.py`
 and `Singles` in `scripts/tests/test_candidates.py`, both carrying the real 09-18 subject lines.
+
+
+## 2026-10-06: Director roles dropped as duplicates; sweep prose contradicted the classifier
+
+Two defects surfaced in the first sweep after the Director discard was lifted.
+
+**1. Dedup collapsed distinct Director roles.** `title_core` cut a title at the first comma or
+dash, so "Director, AI Governance Risk & Responsible AI", "Director, IT PMO" and every other
+"Director, <function>" reduced to the bare word `director` and matched as a team variant of one
+function. Four distinct roles (Acosta, Ladders, OpenLoop, Vertex) were skipped against different
+Withdrawn or To Apply rows at the same company. The Director discard had hidden this, because
+almost no Director titles reached dedup before.
+**Rule:** when the text before the separator is only a rank word (`BARE_RANK` in
+`scripts/normalize.py`), the core is the whole title minus parenthetical qualifiers. Functional
+cores ("Product Manager, Growth") are unchanged, so location and team variants still dedupe.
+Covered by `TitleCoreBareRank` in `test_normalize.py` and `DedupDirectorTitles` in
+`test_dedup_lock_rows.py`, which carry the four real pairs.
+
+**2. `daily-sweep` step 2 still called "<Role> at <Company>" a single-job email.** The
+classifier was inverted on 2026-09-18 (only "You may be a fit for X's Y role" is a single), but
+the skill prose kept the old example. A sweep followed the prose and left five alert digests
+unopened; `audit.py` printed INCOMPLETE, which is the control working.
+**Rule:** step 2 now says every thread is opened except the one single-job subject shape, and
+that anything else is a digest. Covered by `SweepSkillProse` in `test_audit.py`, which fails if
+the prose names "<Role> at <Company>" before declaring other subjects digests.

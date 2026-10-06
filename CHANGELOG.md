@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.9 (2026-10-06)
+
+Two fixes found by the first sweep after Director titles were allowed through.
+
+- **Dedup no longer merges different Director roles.** A title like "Director, AI Governance"
+  used to reduce to just "director" and match any other Director role at the same company.
+  When the part before the comma is only a rank word, the whole title is compared instead.
+  Location and team variants of a functional title (for example "Product Manager, Growth" vs
+  "Product Manager, Payments") still dedupe as before.
+- **`daily-sweep` no longer tells the agent to skip digests.** Step 2 listed "<Role> at
+  <Company>" as a single-job email. Only "You may be a fit for X's Y role" is a single; every
+  other alert subject is a multi-listing digest and is opened. A test now guards the wording.
+
 ## 0.2.8 (2026-10-06)
 
 Examples and test data only, no behavior change. Replaced real employer names in the incident

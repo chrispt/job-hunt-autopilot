@@ -20,6 +20,13 @@ LEGAL_SUFFIXES = {
 # SAME posting ("Senior AI Product Manager" == "AI Product Manager, Senior"). They are NOT
 # dropped by screen.py, which needs them.
 LEVEL_TOKENS = {"senior", "sr", "jr", "junior", "staff", "principal", "lead", "ii", "iii", "iv", "l4", "l5", "l6"}
+# Words that name a rank or a generic job family and nothing about the function. A title whose
+# text before the first comma or dash is made only of these ("Director, AI Governance", "Vice
+# President - Sales") has no usable core: the function lives after the separator.
+BARE_RANK = {
+    "director", "associate", "assistant", "manager", "vice", "president", "vp", "svp", "evp", "avp",
+    "head", "of", "chief", "officer", "managing", "group", "general", "executive", "partner",
+}
 REJECTION_PREFIX = "❌"  # the red X the pipeline prefixes onto rejected companies
 _PUNCT = re.compile(r"[.,&™®'\"!?:;()\[\]{}/\|+*#@$%^~`<>=]")
 _WS = re.compile(r"\s+")
@@ -61,8 +68,12 @@ def title_core(title: str) -> str:
     if not title:
         return ""
     t = re.sub(r"\([^)]*\)", " ", title)
-    t = re.split(r"\s[-–,|]\s|,", t, maxsplit=1)[0]
-    return normalize_title(t)
+    core = normalize_title(re.split(r"\s[-–,|]\s|,", t, maxsplit=1)[0])
+    if core and set(core.split()) <= BARE_RANK:
+        # "Director, IT PMO" and "Director, AI Governance" are different roles, not variants of
+        # one function. Keep the whole title (minus parenthetical qualifiers) as the core.
+        return normalize_title(t)
+    return core
 
 
 def same_company(a: str, b: str) -> bool:

@@ -45,6 +45,40 @@ class Dedup(unittest.TestCase):
         self.assertIn("REPLACE(Company, '❌', '')", s["sql"])
 
 
+class DedupDirectorTitles(unittest.TestCase):
+    """The four roles the 2026-10-06 sweep wrongly skipped. Each existing row is a different
+    role at the same company, so each candidate is new, with the sibling noted."""
+    rows = [
+        {"Company": "Acosta Group", "Role": "Director, IT PMO", "Status": "Withdrawn", "Job URL": ""},
+        {"Company": "Ladders", "Role": "Director, Enterprise AI Enablement & Execution", "Status": "Withdrawn", "Job URL": ""},
+        {"Company": "OpenLoop", "Role": "Director, AI Technologies", "Status": "Withdrawn", "Job URL": ""},
+        {"Company": "Vertex Pharmaceuticals", "Role": "Director, AI Governance & Policy", "Status": "To Apply", "Job URL": ""},
+    ]
+
+    def test_distinct_director_roles_are_new(self):
+        res = dedup_query.dedup([
+            {"company": "Acosta Group", "title": "Director, AI Governance Risk & Responsible AI"},
+            {"company": "Ladders", "title": "Director, Product Strategy & Transformation"},
+            {"company": "OpenLoop", "title": "Director, AI Enablement"},
+            {"company": "Vertex Pharmaceuticals", "title": "Director - AI Transformation Portfolio Manager"},
+        ], self.rows)
+        self.assertEqual(res["duplicate"], [])
+        self.assertEqual(len(res["new"]), 4)
+        self.assertTrue(all(n.get("sibling_rows") for n in res["new"]))
+
+    def test_same_director_role_is_still_a_duplicate(self):
+        res = dedup_query.dedup([
+            {"company": "OpenLoop", "title": "Director, AI Technologies"},
+            {"company": "Acosta Group", "title": "Director, IT PMO (Remote)"},
+        ], self.rows)
+        self.assertEqual(len(res["duplicate"]), 2)
+
+    def test_team_variant_of_a_functional_title_is_still_a_duplicate(self):
+        res = dedup_query.dedup([{"company": "Acme", "title": "Deployment Manager, Boston"}],
+                                [{"Company": "Acme", "Role": "Deployment Manager, NYC", "Status": "Withdrawn", "Job URL": ""}])
+        self.assertEqual(len(res["duplicate"]), 1)
+
+
 class Lock(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp()

@@ -45,5 +45,25 @@ class TitleTests(unittest.TestCase):
         self.assertEqual(title_core("Product Manager - Remote (US)"), "product manager")
 
 
+class TitleCoreBareRank(unittest.TestCase):
+    """2026-10-06: title_core cut at the first comma or dash, so every "Director, <function>"
+    title reduced to the bare word "director" and distinct Director roles at one company were
+    skipped as duplicates (Acosta, Ladders, OpenLoop, Vertex)."""
+
+    def test_bare_rank_core_keeps_the_function(self):
+        self.assertNotEqual(title_core("Director, AI Governance Risk & Responsible AI"), title_core("Director, IT PMO"))
+        self.assertNotEqual(title_core("Director - AI Transformation Portfolio Manager"), title_core("Director, AI Governance & Policy"))
+        self.assertNotEqual(title_core("Associate Director, Data"), title_core("Associate Director, Finance"))
+        self.assertNotEqual(title_core("Vice President, Sales"), title_core("Vice President, Product"))
+        self.assertNotEqual(title_core("Manager, AI Governance"), title_core("Manager, Procurement"))
+
+    def test_same_director_role_with_a_location_still_matches(self):
+        self.assertEqual(title_core("Director, AI Enablement (Remote)"), title_core("Director, AI Enablement"))
+
+    def test_functional_cores_are_unchanged(self):
+        self.assertEqual(title_core("Product Manager, Growth"), "product manager")
+        self.assertEqual(title_core("Director of Product, Growth"), "director of product")
+
+
 if __name__ == "__main__":
     unittest.main()

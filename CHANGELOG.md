@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 (2026-10-06)
+
+- **`userdata.py status` no longer calls untouched templates "edited".** On a fresh install,
+  before the first session has restored your files, it reported every template as "edited here,
+  not yet saved". It now says "not restored yet" (or "saved copy will be restored" when you
+  already have one). Nothing was ever at risk: saving is blocked for a folder that has not been
+  restored. Display fix only.
+
 ## 0.3.0 (2026-10-06)
 
 Your setup now survives plugin updates.

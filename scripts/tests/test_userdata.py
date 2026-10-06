@@ -180,6 +180,23 @@ class Cli(Env):
         self.assertIn("not yet saved", text)
         self.assertFalse(os.path.exists(os.path.join(self.data, "data", "screens.json")))
 
+    def test_status_before_the_first_restore_does_not_call_templates_edits(self):
+        """A fresh install has not been restored yet; its files are untouched templates."""
+        r = self.root("0.3.0")
+        text = userdata.status(r)
+        self.assertIn("NO (run apply)", text)
+        self.assertNotIn("edited here", text)
+        self.assertIn("not restored yet", text)
+
+    def test_status_before_restore_shows_a_saved_copy_will_come_back(self):
+        old = self.root("0.3.0")
+        userdata.apply(old)
+        write(os.path.join(old, "data/notion.json"), "MINE")
+        userdata.save(old)
+        new = self.root("0.3.1")  # updated, session not started yet
+        text = userdata.status(new)
+        self.assertIn("data/notion.json: saved copy will be restored", text)
+
 
 if __name__ == "__main__":
     unittest.main()

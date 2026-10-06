@@ -202,10 +202,13 @@ def status(root=None):
     m = load_manifest(data)
     lines = [f"userdata: data folder {data}",
              f"userdata: restored into this folder: {'yes' if _same(m.get('applied_root'), root) else 'NO (run apply)'}"]
+    restored = _same(m.get("applied_root"), root)
     for rel in files:
         r, d = sha(os.path.join(root, rel)), sha(os.path.join(data, rel))
         applied = m["files"].get(rel, {}).get("applied_sha")
-        if not d and r and r != applied:
+        if not restored:
+            state = "saved copy will be restored" if d else "not restored yet (template)"
+        elif not d and r and r != applied:
             state = "edited here, not yet saved"
         elif not d:
             state = "template only (no personal copy yet)"

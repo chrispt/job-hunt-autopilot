@@ -1,0 +1,16 @@
+{
+  "_comment": "Written by /setup-job-search. Notion bindings read by scripts (dedup_query.py) and the skills. Do not commit real ids to a public fork.",
+  "database_id": "<database_id>",
+  "data_source_id": "<data_source_id>",
+  "views": {
+    "status_integrity": "view://<id>",
+    "fresh_queue": "view://<id>",
+    "ranked_queue": "view://<id>",
+    "applied_open": "view://<id>",
+    "outreach_owed": "view://<id>",
+    "packets_ready": "view://<id>",
+    "added_last_7_days": "view://<id>",
+    "age_out_candidates": "view://<id>",
+    "snapshot_slice": "view://<id>"
+  }
+}

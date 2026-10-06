@@ -1,0 +1,11 @@
+{
+  "$comment": "This plugin does NOT bundle MCP servers: a plugin's .mcp.json can only ship stdio servers it launches itself, and every connector below is a remote connector the user connects in their own account. This file documents them as prerequisites; it intentionally defines no servers.",
+  "requiredConnectors": [
+    {"name": "Notion", "purpose": "The pipeline database. Routine reads go through saved views (quota-exempt)."},
+    {"name": "Gmail", "purpose": "Read-only inbox reconciliation and LinkedIn job-alert digests."},
+    {"name": "Indeed job-search MCP", "purpose": "Discovery (search_jobs) and job details (get_job_details)."},
+    {"name": "Google Drive (optional)", "purpose": "Reading the master resume by id and recording Drive links on tailored documents."},
+    {"name": "Claude in Chrome extension (recommended)", "purpose": "LinkedIn postings and ATS forms behind logins."},
+    {"name": "Python 3.11+ (local)", "purpose": "scripts/ (audit, parsing, screening, dedup, locks)."}
+  ]
+}

@@ -1,0 +1,8 @@
+*.bak*
+runs/
+data/locks/
+data/pipeline-snapshot.json
+__pycache__/
+*.pyc
+.in_use
+data/notion.json

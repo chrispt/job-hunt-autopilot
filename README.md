@@ -18,26 +18,89 @@ https://github.com/chrispt/job-hunt-autopilot
 
 ## What you need
 
-- Claude Code (desktop app or CLI) with scheduled tasks
-- Python 3.11 or newer (no third-party packages)
-- Connectors you connect yourself: Notion (required), Gmail (required for status updates and
-  LinkedIn alert digests), an Indeed job-search MCP (recommended), Google Drive (optional),
-  the Claude in Chrome extension (recommended for LinkedIn postings and ATS forms)
-- A Notion workspace (free plan works; the plugin routes routine reads through saved views,
-  which are not quota-limited)
+- **A Claude account that can run Claude Code:** a paid Claude subscription or an
+  Anthropic Console account. The desktop app requires the subscription. Anthropic's
+  [Claude Code overview](https://code.claude.com/docs/en/overview) lists which plans include
+  Claude Code today.
+- **Claude Code**, in either form:
+  - the **Claude desktop app** (macOS and Windows, Linux in beta). Claude Code is built in:
+    sign in and open the **Code** tab. Download from the overview page above.
+  - the **terminal CLI**. macOS, Linux and WSL: `curl -fsSL https://claude.ai/install.sh | bash`.
+    Windows PowerShell: `irm https://claude.ai/install.ps1 | iex`.
+- **The desktop app, if you want the weekday schedule to run by itself.** The three scheduled
+  tasks are local desktop tasks: they run on your computer and only fire while the app is open
+  and the computer is awake (turn on **Keep computer awake** in Settings if you want 8 AM
+  runs). A run missed while the computer slept is made up once, when the app opens or the
+  computer wakes. With the terminal CLI alone everything still works, but you start `/sweep`
+  and `/apply-prep` yourself.
+- **Python 3.11 or newer** (no third-party packages).
+- **Connectors you connect yourself:** Notion (required), Gmail (required for status updates
+  and LinkedIn alert digests), an Indeed job-search connector (recommended), Google Drive
+  (optional), the Claude in Chrome extension (recommended for LinkedIn postings and ATS forms).
+  In the desktop app, use **+ > Connectors** next to the prompt box in the Code tab. For
+  terminal setups see Anthropic's [MCP guide](https://code.claude.com/docs/en/mcp).
+- **A Notion workspace** (free plan works; the plugin routes routine reads through saved views,
+  which are not quota-limited).
 
 ## Install
 
-1. Clone this repo somewhere permanent.
-2. Register it as a plugin marketplace and install, either from GitHub:
-   `/plugin marketplace add chrispt/job-hunt-autopilot`, or from the clone:
-   `/plugin marketplace add <path to your clone>`; then
-   `/plugin install job-search-agent@job-hunt-autopilot`.
-3. Run `/setup-job-search`. It checks connectors and Python, creates the Notion database and
-   its saved views, writes the ids into `data/notion.json`, and walks you through your
-   profile (`context/candidate-profile.md`), accuracy rules, search queries
-   (`data/queries.json`), screens (`data/screens.json`), and the three scheduled tasks.
-4. Run `/sweep` once with you watching, then `/apply-prep 1`.
+1. Install Claude Code (above) and sign in.
+2. Add this repository as a plugin marketplace and install the plugin. Use whichever fits how
+   you run Claude Code. The terminal, the desktop app's local sessions and the VS Code
+   extension read the same user settings, so installing one way makes it available in all.
+   - **Terminal:**
+     ```
+     claude plugin marketplace add chrispt/job-hunt-autopilot
+     claude plugin install job-search-agent@job-hunt-autopilot
+     ```
+   - **Inside a Claude Code session:** one command adds the marketplace and starts the install
+     (needs Claude Code 2.1.275 or later). Choose **Install for you (user scope)**:
+     ```
+     /plugin install job-search-agent --marketplace chrispt/job-hunt-autopilot
+     ```
+   - **Desktop app:** add the marketplace once (run the first terminal command, or ask Claude in
+     a Code session to run it for you), then click **+ > Plugins > Add plugin** next to the
+     prompt box, pick `job-search-agent`, and choose your user account as the scope. If you
+     have no terminal CLI, ask Claude in a Code session to run the two terminal commands above.
+   - **From a clone** (to read or change the code): `claude plugin marketplace add <path to
+     your clone>`, then the same install command.
+3. Restart Claude Code, or run `/reload-plugins`. Check that it loaded: `claude plugin list`
+   shows `job-search-agent@job-hunt-autopilot`, and typing `/` lists its skills.
+4. Connect the connectors above.
+5. Run `/setup-job-search` (it may be listed as `/job-search-agent:setup-job-search`). It
+   checks connectors and Python, creates the Notion database and its saved views, writes the
+   ids into `data/notion.json`, and walks you through your profile
+   (`context/candidate-profile.md`), accuracy rules, search queries (`data/queries.json`),
+   screens (`data/screens.json`), and the three scheduled tasks.
+6. Run `/sweep` once with you watching, then `/apply-prep 1`.
+
+If `claude` is not found after installing the CLI, open a new terminal window. If the
+marketplace will not clone, try the full URL, `https://github.com/chrispt/job-hunt-autopilot.git`.
+If the plugin does not appear, run `/reload-plugins` and check the **Errors** tab in `/plugin`.
+
+## Where your settings live, and how to update without losing them
+
+Setup writes your personal files into the installed copy of the plugin, because that copy is
+the one that runs: `~/.claude/plugins/cache/job-hunt-autopilot/job-search-agent/<version>/`
+(on Windows, `C:\Users\<you>\.claude\plugins\...`). An update installs a **new version
+folder**, and your files do not follow it automatically. The personal files are:
+
+- `context/candidate-profile.md`, `context/accuracy-rules.md`, `context/config.md`
+- `data/notion.json`, `data/queries.json`, `data/screens.json`, `data/exclusions.md`
+
+Copy them somewhere safe after setup. To update:
+
+```
+claude plugin marketplace update job-hunt-autopilot
+claude plugin update job-search-agent@job-hunt-autopilot
+```
+
+Restart Claude Code, then copy your files from the old version folder into the new one. Read
+`CHANGELOG.md` first: when a release changes one of those data files (for example
+`data/screens.json` in 0.2.7), merge the change into your copy instead of overwriting it.
+Marketplaces added from GitHub do not auto-update by default, so nothing changes until you run
+the update. The scheduled tasks live outside the plugin folder, in `~/.claude/scheduled-tasks/`,
+and survive updates.
 
 ## How a day runs
 

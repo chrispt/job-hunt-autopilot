@@ -39,16 +39,20 @@ rule exists.
 
 ## What you need
 
-Claude Code (desktop app or CLI) with scheduled tasks; Python 3.11+; a Notion workspace
-(free plan is fine); Gmail; an Indeed job-search connector; optionally Google Drive and the
-Claude in Chrome extension. Windows, macOS and Linux; the PDF step uses Word on Windows and
-degrades to .docx elsewhere.
+A paid Claude subscription or an Anthropic Console account, and Claude Code (the Claude
+desktop app, which has it built in, or the terminal CLI). The desktop app is what runs the
+weekday schedule by itself; with the CLI alone you start each run by hand. Also: Python 3.11+;
+a Notion workspace (free plan is fine); Gmail; an Indeed job-search connector; optionally
+Google Drive and the Claude in Chrome extension. Windows, macOS and Linux; the PDF step uses
+Word on Windows and degrades to .docx elsewhere.
 
 ## Install
 
-1. `/plugin marketplace add chrispt/job-hunt-autopilot`
-2. `/plugin install job-search-agent@job-hunt-autopilot`
-3. `/setup-job-search`
+1. `claude plugin marketplace add chrispt/job-hunt-autopilot`
+2. `claude plugin install job-search-agent@job-hunt-autopilot`
+3. Connect Notion and Gmail, then run `/setup-job-search`
+
+Desktop-app steps, updating, and where your settings live are in the README.
 
 ## Honest limits
 

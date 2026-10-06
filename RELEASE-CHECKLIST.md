@@ -3,29 +3,29 @@
 This tree is generated from the private source edition by `packaging/build_community.py`.
 Never edit it by hand; edit the source, rebuild, and re-run the leak scan.
 
-## First release
+## History note
 
-The public repository `chrispt/job-hunt-autopilot` already exists and holds the older
-hand-made 0.1.0 template. This tree replaces its contents without rewriting its history.
+On 2026-10-06 the public history was squashed to a single commit after a sanitization pass
+(employer names had reached the incident log and test data). Older tags and releases were
+removed. Do not restore them from any local backup.
 
-1. From this directory: `git remote add origin https://github.com/chrispt/job-hunt-autopilot.git`,
-   `git fetch origin`, then `git merge --allow-unrelated-histories -s ours origin/master`.
-   The merge keeps this tree's files exactly and makes the public history an ancestor, so
-   the push is a plain fast-forward (no force push).
-2. `git push -u origin master --tags`. Update the repository description on GitHub to match
-   `.claude-plugin/plugin.json`.
-3. Donations go through Buy Me a Coffee (`DONATING.md` and `.github/FUNDING.yml`). Open
-   https://buymeacoffee.com/chrispt once per release to confirm it still resolves. If GitHub
-   Sponsors is ever approved, add `github: chrispt` to `FUNDING.yml` in the source templates
-   and rebuild.
-4. Create the GitHub release for the current tag and attach
-   `job-search-agent-community-<version>.zip` (built by `build_community.py --zip`).
-5. Paste `docs/LISTING.md` as the release description and, if you list it elsewhere
-   (Gumroad "pay what you want", a personal site), as the product page.
-6. Install it yourself from the public repo on a clean profile once:
-   `/plugin marketplace add chrispt/job-hunt-autopilot`, then
-   `/plugin install job-search-agent@job-hunt-autopilot`, then `/setup-job-search`.
-   Fix anything the setup skill trips on before announcing it.
+## Check a release the way a new user installs it
+
+Before announcing a release, install it from the public repo into a throwaway Claude config so
+your own setup is untouched (PowerShell shown; use `export` on macOS and Linux):
+
+```
+$env:CLAUDE_CONFIG_DIR = "$env:TEMP\claude-install-test"
+claude plugin marketplace add chrispt/job-hunt-autopilot
+claude plugin install job-search-agent@job-hunt-autopilot
+claude plugin list
+Remove-Item Env:CLAUDE_CONFIG_DIR
+```
+
+`claude plugin list` must show the new version. Then run `/setup-job-search` once on a clean
+profile and fix anything it trips on. Donations go through Buy Me a Coffee (`DONATING.md` and
+`.github/FUNDING.yml`); open https://buymeacoffee.com/chrispt once per release to confirm it
+still resolves.
 
 ## Every later release
 

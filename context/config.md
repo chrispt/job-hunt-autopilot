@@ -18,12 +18,16 @@ this file instead of inlining ids or paths. `/setup-job-search` fills in the pla
 | Intake screens | `data/screens.json` + `data/exclusions.md` |
 | Notion ids | `data/notion.json` (written by setup) and the view catalogue in `notion-schema.md` |
 
-## Source vs installed copy
+## Source vs installed copy, and where your files live
 
-The installed copy under the plugin cache is what executes. After editing source: bump the
-version in `.claude-plugin/plugin.json` and `marketplace.json`, reinstall, confirm the new
-version directory contains `scripts/`. `scripts/audit.py` on the next scheduled run proves
-which instructions ran.
+The installed copy under the plugin cache is what executes, and an update installs a new version
+folder. Your personal files (listed in `data/userdata-files.json`: profile, accuracy rules, this
+file, Notion ids, queries, screens, exclusions, pipeline snapshot) are therefore kept in the
+plugin's persistent data folder, `~/.claude/plugins/data/job-search-agent-<marketplace>/`.
+`scripts/userdata.py` restores them into each new version folder at session start and saves
+edits at the end of every turn. Edit them where the skills read them, in the plugin folder; do
+not edit the data folder by hand unless you know why. `python scripts/userdata.py status` shows
+what is saved. `scripts/audit.py` on the next scheduled run proves which instructions ran.
 
 ## Tool bindings
 

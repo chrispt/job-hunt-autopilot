@@ -78,29 +78,43 @@ If `claude` is not found after installing the CLI, open a new terminal window. I
 marketplace will not clone, try the full URL, `https://github.com/chrispt/job-hunt-autopilot.git`.
 If the plugin does not appear, run `/reload-plugins` and check the **Errors** tab in `/plugin`.
 
-## Where your settings live, and how to update without losing them
+## Where your settings live, and updating
 
-Setup writes your personal files into the installed copy of the plugin, because that copy is
-the one that runs: `~/.claude/plugins/cache/job-hunt-autopilot/job-search-agent/<version>/`
-(on Windows, `C:\Users\<you>\.claude\plugins\...`). An update installs a **new version
-folder**, and your files do not follow it automatically. The personal files are:
+Your profile, Notion ids, queries, screens and config are saved automatically in Claude Code's
+persistent data folder for this plugin, which survives updates:
+`~/.claude/plugins/data/job-search-agent-job-hunt-autopilot/` (on Windows,
+`C:\Users\<you>\.claude\plugins\data\...`). Two small hooks do it: at session start your
+saved files are restored into the plugin folder, and when a turn ends anything you changed is
+saved. The saved files are `context/candidate-profile.md`, `context/accuracy-rules.md`,
+`context/config.md`, `data/notion.json`, `data/queries.json`, `data/screens.json`,
+`data/exclusions.md` and the pipeline snapshot. Uninstalling the plugin removes that folder
+unless you pass `--keep-data`.
 
-- `context/candidate-profile.md`, `context/accuracy-rules.md`, `context/config.md`
-- `data/notion.json`, `data/queries.json`, `data/screens.json`, `data/exclusions.md`
-
-Copy them somewhere safe after setup. To update:
+To update:
 
 ```
 claude plugin marketplace update job-hunt-autopilot
 claude plugin update job-search-agent@job-hunt-autopilot
 ```
 
-Restart Claude Code, then copy your files from the old version folder into the new one. Read
-`CHANGELOG.md` first: when a release changes one of those data files (for example
-`data/screens.json` in 0.2.7), merge the change into your copy instead of overwriting it.
-Marketplaces added from GitHub do not auto-update by default, so nothing changes until you run
-the update. The scheduled tasks live outside the plugin folder, in `~/.claude/scheduled-tasks/`,
-and survive updates.
+Restart Claude Code. Your saved files are restored into the new version folder. If a release
+changed a data file you have customized (for example `data/screens.json` in 0.2.7), the first
+session after the update tells you; your copy stays in use, so read `CHANGELOG.md` and merge the
+new defaults by hand if they matter to you. Marketplaces added from GitHub do not auto-update by
+default, so nothing changes until you run the update. The scheduled tasks live outside the
+plugin folder, in `~/.claude/scheduled-tasks/`, and survive updates.
+
+**Coming from 0.2.x:** your setup is in the old version folder, not the data folder. After
+updating, your first session prints the exact command; or run it yourself, with the old folder
+under `~/.claude/plugins/cache/job-hunt-autopilot/job-search-agent/`:
+
+```
+python <plugin folder>/scripts/userdata.py import <old version folder>
+```
+
+To check what is saved at any time: `python <plugin folder>/scripts/userdata.py status`. The
+hooks need `python`, `python3` or `py` on your PATH; if saving is not happening, `status` says
+the folder is not restored, and running `userdata.py apply` once by hand fixes it.
 
 ## How a day runs
 

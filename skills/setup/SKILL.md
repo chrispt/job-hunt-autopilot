@@ -20,6 +20,16 @@ not skip a step silently; a half-configured plugin fails quietly on its first sc
 - Pin the Indeed tool names in `context/config.md` (search for `search_jobs` and
   `get_job_details`).
 
+### Your files are kept across updates
+
+Your profile, Notion ids, queries, screens and config are saved automatically to the plugin's
+persistent data folder by `scripts/userdata.py` (session-start and end-of-turn hooks). Check
+that it is working before you go further: run `<python> "${CLAUDE_PLUGIN_ROOT}/scripts/userdata.py" status`
+(if the variable is empty, use the installed plugin path from `context/config.md`). If it says
+the folder is not restored, run `... userdata.py apply` once. If the user set this plugin up in
+an earlier version (0.2.x) and it printed an `import` command, run it now, then show them
+`status`. Re-run `status` after steps 3 and 5 and tell them which files are saved.
+
 ## 2. Notion database
 
 Create the "Job Search Pipeline" database with `notion-create-database` using the schema in

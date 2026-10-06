@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "for p in python python3 py; do if command -v \"$p\" >/dev/null 2>&1; then \"$p\" \"${CLAUDE_PLUGIN_ROOT}/scripts/userdata.py\" apply && exit 0; fi; done; exit 0",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "for p in python python3 py; do if command -v \"$p\" >/dev/null 2>&1; then \"$p\" \"${CLAUDE_PLUGIN_ROOT}/scripts/userdata.py\" save && exit 0; fi; done; exit 0",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

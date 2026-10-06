@@ -22,7 +22,7 @@ claude plugin list
 Remove-Item Env:CLAUDE_CONFIG_DIR
 ```
 
-`claude plugin list` must show the new version. Then run `/setup-job-search` once on a clean
+`claude plugin list` must show the new version. For a release that touches `scripts/userdata.py`, also simulate an update in the throwaway config (edit a personal file, bump the version, `claude plugin update`) and run `userdata.py apply` from the new folder: the edit must come back, and `userdata.py status` must report it saved. Then run `/setup-job-search` once on a clean
 profile and fix anything it trips on. Donations go through Buy Me a Coffee (`DONATING.md` and
 `.github/FUNDING.yml`); open https://buymeacoffee.com/chrispt once per release to confirm it
 still resolves.

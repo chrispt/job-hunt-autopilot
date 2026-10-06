@@ -1,0 +1,13 @@
+{
+  "_comment": "Personal files kept in the plugin's persistent data folder across updates (see scripts/userdata.py).",
+  "files": [
+    "context/candidate-profile.md",
+    "context/accuracy-rules.md",
+    "context/config.md",
+    "data/notion.json",
+    "data/queries.json",
+    "data/screens.json",
+    "data/exclusions.md",
+    "data/pipeline-snapshot.json"
+  ]
+}

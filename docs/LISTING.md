@@ -52,7 +52,7 @@ Word on Windows and degrades to .docx elsewhere.
 2. `claude plugin install job-search-agent@job-hunt-autopilot`
 3. Connect Notion and Gmail, then run `/setup-job-search`
 
-Desktop-app steps, updating, and where your settings live are in the README.
+Your profile and settings are saved outside the version folder, so updates do not wipe them. Desktop-app steps and updating are in the README.
 
 ## Honest limits
 

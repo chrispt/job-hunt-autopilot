@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0 (2026-10-06)
+
+Your setup now survives plugin updates.
+
+- **Personal files are kept in Claude Code's persistent plugin data folder** and restored into
+  each new version folder. Before this, setup wrote your profile, Notion ids, queries, screens
+  and config into the version folder, and `claude plugin update` left them behind. Two hooks
+  (`hooks/hooks.json`) run `scripts/userdata.py`: `apply` at session start, `save` at the end of
+  every turn. Skills and scripts read the same paths as before.
+- **Safe by construction:** a folder that has not been restored never saves, so a fresh
+  template can not overwrite your saved copy. Unsaved edits survive a new session.
+- **Release notices:** when an update changes a data file you have customized, the first session
+  says which one. Your copy stays in use.
+- **Coming from 0.2.x:** run `userdata.py import <old version folder>` once. The first session
+  after the update prints the command. `userdata.py status` shows what is saved.
+
 ## 0.2.9 (2026-10-06)
 
 Two fixes found by the first sweep after Director titles were allowed through.

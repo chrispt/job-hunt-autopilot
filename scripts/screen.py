@@ -188,8 +188,9 @@ class Screener:
         if bucket != "discard":
             if c.get("referral"):
                 notes.append("STANDOUT: referral contact at this company")
-            if (c.get("match") or 0) >= self.s["standout"]["match_threshold"]:
-                notes.append(f"STANDOUT: match {c.get('match')}% >= {self.s['standout']['match_threshold']}")
+            thr = self.s.get("standout", {}).get("match_threshold")
+            if thr is not None and (c.get("match") or 0) >= thr:
+                notes.append(f"STANDOUT: match {c.get('match')}% >= {thr}")
         out = dict(c)
         out["bucket"] = bucket
         out["rules"] = rules

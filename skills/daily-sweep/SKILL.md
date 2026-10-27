@@ -100,9 +100,10 @@ as a deliberate skip, never as a fault.
    `$PY $S/audit.py --mode <full|light|skip>` and paste its block **verbatim** into the report.
    If it says INCOMPLETE, name what is missing; if the fix is cheap (a search that never ran,
    a digest never opened), do it and re-run the audit. Never hand-write that block.
-8. **Standouts.** Any created row scoring ≥ 80%, or at a company matching the connections
-   roster (path in config.md; same normalization as `scripts/normalize.py`), goes at the top
-   of the report as a standout and is eligible for the next `apply-prep` ahead of queue order.
+8. **Standouts.** Any created row at a company matching the connections roster (path in
+   config.md; same normalization as `scripts/normalize.py`) goes at the top of the report as a
+   standout, with the contact's name, and is eligible for the next `apply-prep` ahead of queue
+   order. A high Match % alone is not a standout (retired 2026-10-26, see apply-assist 5a).
 
 ## Part 2: Email reconciliation
 

@@ -1,5 +1,85 @@
 # Changelog
 
+## 0.6.0 (2026-10-26)
+
+Warm-first applying. Across 166 applications, the ones with a referral or a hiring-team
+contact reached an interview about 14% of the time and cold ones about 1.5%, yet only 4 of
+the last 33 had a referral. A referral that arrives after you apply usually doesn't attach.
+
+- **Referral hold (apply-assist step 5a).** When the company is in your connections roster,
+  the referral ask is drafted first, the role gets a `Referral hold:` Notes line with an
+  apply-by date three business days out, and Phase B waits for the referral link or that
+  date. The packet is still built during the hold. apply-prep and link-list batch mode run
+  the same gate; batch mode joins every link against the roster up front.
+- **Standout = someone you know.** A Match % of 80+ no longer jumps the apply-prep order
+  (`standout.match_threshold` is now null in `data/screens.json`; the top score band had
+  never produced an interview).
+- **Outreach is part of submitting.** A Phase B run isn't finished until the hiring-manager,
+  recruiter and director notes are set up for you to send, hiring manager first. Skipping
+  one is recorded as `Outreach skipped <date>: <reason>`.
+- **Measuring it.** funnel-review reports a warm vs cold table and the warm share of
+  apps-out (target: at least half); `/job-status` lists referral holds and their due dates.
+
+## 0.5.2 (2026-10-09)
+
+- **Liveness before any packet work.** LinkedIn's public `jobs-guest` endpoint served two
+  closed postings as open, and both packets were rebuilt for nothing. It is now used for JD
+  text only. apply-assist (including link-list workers) and apply-prep confirm the req on the
+  employer's ATS job list or logged-in LinkedIn before building or rebuilding, check the
+  workplace type against your location rule, and record the liveness source in the manifest.
+- **Form-fill notes:** iCIMS iframe forms (fill via `contentDocument`, attach files yourself,
+  "Submit Profile" step buttons) and dropped keystrokes when the Chrome window lacks focus.
+
+## 0.5.1 (2026-10-09)
+
+Lessons from the first real packet built with the 0.5.0 checks.
+
+- **Cover letter length check.** `scripts/ats_check.py pages --pdf <file> --max 1` reports the
+  page count and what spilled onto the extra page. apply-assist runs it on every cover letter.
+- **Page-1 slack.** If your master resume starts page 2 with a section or page break, lines
+  added to page 1 push all of page 2 onto a third page. Tailoring now keeps page-1 edits
+  length-neutral and re-checks the page count after each export.
+- **Exact JD wording for the term map.** `WebFetch` paraphrases pages through a summarizing
+  model, so the term list is built from the raw posting text instead (fetch, then strip the
+  HTML). LinkedIn's public `jobs-guest` endpoint is documented as a way to read a posting
+  without the browser extension.
+
+## 0.5.0 (2026-10-09)
+
+Built to get more applications past the automated screen and in front of a person.
+
+- **JD term coverage.** Before tailoring, apply-assist and apply-prep list the posting's own
+  required and preferred terms and its title wording, and map each to a fact in your master
+  resume. Backed terms are carried into the headline, summary, Core Competencies and bullets
+  in the JD's phrasing; terms with no honest backing are reported as gaps and never inserted.
+  `scripts/ats_check.py coverage` measures the result against your master.
+- **PDF parse check.** `scripts/ats_check.py parse` reads each tailored PDF the way a plain ATS
+  parser would and checks contact details, headings, employers, titles, date ranges, dates
+  sitting next to their titles, and risky glyphs. Needs `pypdf` (`python -m pip install
+  pypdf`); without it the check reports SKIPPED. Fill in `data/resume-expect.json` once.
+- **Packet manifest** gains an "ATS check" section, and Notion Notes gain one greppable
+  `ATS terms: req x/n, pref y/m, title hit|miss, parse ...` line per packet.
+- **Accuracy rules:** new "JD vocabulary and ATS alignment" section (what rewording is allowed,
+  what is not: no hidden text, no keyword dumps, no unbacked terms).
+- **Standing answers:** optional years-of-experience figures in your candidate profile, so
+  "how many years of X" questions can be filled honestly (never rounded up).
+- Template ATS notes now carry the 0.4.0 Workday Submit safeguard, and the template version
+  files match the release.
+
+## 0.4.0 (2026-10-08)
+
+- **Link-list batch mode for `apply-assist`.** Paste a list of job posting links (or run
+  `/apply <url> <url> ...`). The pipeline check runs once up front, then one background worker
+  per link does the prep: JD read, scoring, gates, Notion row, tailored packet and outreach
+  drafts, at most 5 at a time. You get one summary table. Form-filling still goes one
+  application at a time, since each one needs you for login, consents and Submit.
+- **Workday Submit safeguard.** On the Review step, Workday's "Save and Continue" button
+  becomes Submit while keeping the same element. apply-assist now re-reads the current step and
+  the button text before every click on it, never clicks it in the same batch as a step you
+  just did, and stops when a pre-click check comes back empty.
+- **Workday notes:** upload first when a tenant makes the resume required on My Experience,
+  and ask before entering an in-progress degree on an Education section that has no dates.
+
 ## 0.3.1 (2026-10-06)
 
 - **`userdata.py status` no longer calls untouched templates "edited".** On a fresh install,

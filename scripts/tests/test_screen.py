@@ -126,9 +126,19 @@ class Recency(unittest.TestCase):
 
 
 class Standout(unittest.TestCase):
-    def test_referral_and_high_match_noted(self):
+    def test_referral_is_the_only_default_standout(self):
+        # match_threshold is null since 2026-10-26: a high score alone is not a standout
         r = screener().screen({"title": "AI PM", "company": "A", "referral": True, "match": 82})
-        self.assertEqual(sum("STANDOUT" in n for n in r["notes"]), 2)
+        self.assertEqual([n for n in r["notes"] if "STANDOUT" in n],
+                         ["STANDOUT: referral contact at this company"])
+        r = screener().screen({"title": "AI PM", "company": "A", "match": 95})
+        self.assertFalse(any("STANDOUT" in n for n in r["notes"]))
+
+    def test_match_threshold_can_be_restored(self):
+        sc = screener()
+        sc.s["standout"]["match_threshold"] = 80
+        r = sc.screen({"title": "AI PM", "company": "A", "match": 82})
+        self.assertTrue(any("STANDOUT: match 82%" in n for n in r["notes"]))
 
 
 if __name__ == "__main__":

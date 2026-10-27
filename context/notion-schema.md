@@ -82,8 +82,9 @@ compute age from `Created`.
 ## Conventions
 
 - **Queue ranking**: read the ⚙ Ranked queue view (floor-gated, Priority then oldest). Match %
-  is a floor, not a ranking signal. Packets-ready rows are listed first; standouts jump the
-  order for `apply-prep`.
+  is a floor, not a ranking signal. Packets-ready rows are listed first; standouts (a company
+  in your connections roster) jump the order for `apply-prep`. Roles on a referral hold carry
+  a `Referral hold:` Notes line and are not submitted until the hold resolves.
 - **Follow-up & ghosting**: on submission set Follow Up Date = Date Applied + 5 business days.
   The sweep drafts a nudge when it arrives and sends nothing. Applied 21+ days with no reply is
   proposed as Ghosted, never set automatically.

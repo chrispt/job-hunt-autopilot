@@ -9,7 +9,7 @@ this file instead of inlining ids or paths. `/setup-job-search` fills in the pla
 |---|---|
 | Python | `<path to python 3.11+>` (Git Bash form too, e.g. `/c/Python314/python`). Always run with `PYTHONIOENCODING=utf-8`; pipeline text carries `❌` and `™` characters that break the default Windows console codec |
 | Plugin root at runtime | `${CLAUDE_PLUGIN_ROOT}`; if empty, the installed plugin path under `~/.claude/plugins/cache/<marketplace>/job-search-agent/<version>/` |
-| Scripts | `${CLAUDE_PLUGIN_ROOT}/scripts/`: `audit.py`, `discover.py`, `candidates.py`, `screen.py`, `dedup_query.py`, `parse_linkedin_digest.py`, `normalize.py`, `notion_rows.py`, `lock.py`, `snapshot_build.py`; tests in `scripts/tests/` |
+| Scripts | `${CLAUDE_PLUGIN_ROOT}/scripts/`: `audit.py`, `discover.py`, `candidates.py`, `screen.py`, `dedup_query.py`, `parse_linkedin_digest.py`, `normalize.py`, `notion_rows.py`, `lock.py`, `snapshot_build.py`, `ats_check.py` (JD term coverage and PDF parse check; uses `pypdf` if installed, `python -m pip install pypdf`, and reports SKIPPED without it); tests in `scripts/tests/` |
 | Run files | `${CLAUDE_PLUGIN_ROOT}/runs/<date>/` (ephemeral) |
 | Locks | `${CLAUDE_PLUGIN_ROOT}/data/locks/<task>.lock`, 3 h staleness |
 | Pipeline snapshot | `data/pipeline-snapshot.json`, refreshed weekly by `funnel-review` |
@@ -69,6 +69,11 @@ this folder stays the record.
 
 ## JD read ladder (used by apply-prep and apply-assist step 3)
 
+Note for the JD term map (apply-assist step 5b): `WebFetch` summarizes pages through a model
+and paraphrases them. For the term list, fetch the raw text (`curl` to a scratch file, strip
+the HTML) so the terms are the posting's own words. LinkedIn's public
+`jobs-guest/jobs/api/jobPosting/<job id>` endpoint returns the posting anonymously.
+
 Anonymous fetches of LinkedIn and `to.indeed.com` URLs never return the posting. Read a JD
 through the first rung that works and record which one:
 
@@ -84,6 +89,18 @@ through the first rung that works and record which one:
    reading "No longer accepting applications" is a positive closed signal.
 4. **Nothing rendered**: flag "JD unreadable by every path, possibly expired, not withdrawn"
    and move on. Never withdraw a row on an empty render.
+
+**Liveness is a separate check.** LinkedIn's `jobs-guest` endpoint is fine for the JD text but
+lags on status: a missing "No longer accepting applications" notice there is inconclusive.
+Before building or rebuilding a packet, confirm the req appears on the employer's own ATS job
+list (Greenhouse `boards-api.greenhouse.io/v1/boards/<board>/jobs`, Ashby posting-api, Lever
+`api.lever.co/v0/postings/<company>`, Workday CXS search: POST
+`/wday/cxs/<tenant>/<site>/jobs` with `{"appliedFacets":{},"limit":20,"offset":0,"searchText":"<title>"}`,
+Workable) or on logged-in LinkedIn via the extension, which also shows the workplace type
+(On-site / Hybrid / Remote) to check against your location rule. To find the ATS, follow
+LinkedIn's "Apply on company website" link and read only the origin and path, or use the
+employer's careers page. Record `Liveness: <source>, <date>` in the manifest; if nothing
+reliable answers, do not build.
 
 ## Referral-site policy
 

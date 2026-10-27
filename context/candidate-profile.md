@@ -28,6 +28,10 @@ command walks you through it. Two layers:
   - Voluntary self-ID, if you want it filled for you: Gender <...> · Hispanic/Latino <...> ·
     Race <...> · Veteran status <...> · Disability status <...> · Pronouns <...>
   - Marketing email / SMS opt-ins: <No>
+  - Years of experience, for "how many years of X" and "do you have N+ years of X" questions:
+    <field 1> <n> · <field 2> <n> · total career <n> · people management (formal direct
+    reports) <n>. The agent answers only fields listed here, uses the bucket that contains
+    the number, answers "No" below a stated bar, and never rounds up or adds rows together.
   - The agent matches each form's own option wording and verifies every selection. Anything
     left blank here, and any question not listed (for example "have you ever been fired"),
     stays yours on every form. Record a disability answer only as the option you choose;

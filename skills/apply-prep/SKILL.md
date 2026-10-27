@@ -39,8 +39,10 @@ sends, or fabricates.
 ## Selecting candidates
 
 1. From the ranked queue, take the first 6 rows (twice the packet count, so that gate
-   failures and unreadable JDs still leave 3 packets). Standouts first: Match ≥ 80, or the
-   company appears in the connections roster (`normalize.py` for the match). Then queue order.
+   failures and unreadable JDs still leave 3 packets). Standouts first: the company appears
+   in the connections roster (`normalize.py` for the match). Then queue order. A high Match %
+   is not a standout (retired 2026-10-26; the 75+ band had 0 interviews in 36 applications,
+   while referral and hiring-team applications converted about ten times better than cold).
 2. Skip: any row already in "⚙ Packets ready"; any company in `data/exclusions.md`; any row
    whose Notes carry `Aged Out` or a closed signal.
 3. **Re-screen** the six: write `{title, company, source, salary}` for each to
@@ -55,6 +57,12 @@ sends, or fabricates.
    "paths tried" row: `Company | Role | indeed-details / ats-json / extension / none`. A
    positive closed signal → propose Withdrawn in the report (do not set it) and move on. No
    rung rendered → "JD unreadable by every path, possibly expired, not withdrawn", move on.
+   Then the **liveness and work-arrangement check** from apply-assist step 3 ("Liveness and
+   work arrangement" in config.md) before any document work: the jobs-guest text is never
+   proof of liveness, so confirm on the employer's ATS job list (or logged-in LinkedIn when
+   the extension answers) and record `Liveness: <source>, <date>` and the workplace type in
+   the manifest. Unconfirmed → no packet, listed as "liveness unconfirmed". A hybrid or
+   on-site role needing a move away from your home region → no packet, "needs the candidate's call".
 2. **Re-score and gates** exactly as apply-assist steps 4 and 5; update Match % and append
    the `JD screen:` Notes line. A gate failure (below the 55% floor after the JD read,
    structural gap, salary below floor with no differentiator) → no packet; say which gate;
@@ -62,7 +70,9 @@ sends, or fabricates.
    answered conservatively here: **no packet** for a clearly below-floor posting; list it as
    "needs the candidate's call" instead.
 3. **Tailor** from the local master `.docx` (path in config.md). If `G:` is absent, stop the
-   run here with a clear line; do not tailor from the Drive markdown. Save to
+   run here with a clear line; do not tailor from the Drive markdown. Write `terms.json` and
+   carry the backed terms exactly as apply-assist steps 5b and 6 (headline, summary,
+   competencies, bullet vocabulary; unbacked terms are gaps, never inserted). Save to
    `<your documents folder>\<Company> - <Role>\` with the generic filenames from config.md.
 4. **PDF** alongside each `.docx`, via Word COM in PowerShell wrapped in a job with a
    90-second timeout, killing the Word process the job started if it hangs:
@@ -72,25 +82,34 @@ sends, or fabricates.
    if (-not (Wait-Job $job -Timeout 90)) { Stop-Job $job; Get-Process WINWORD -ErrorAction SilentlyContinue | Where-Object {$_.StartTime -gt (Get-Date).AddMinutes(-2)} | Stop-Process -Force; 'PDF: pending (Word timed out)' }
    ```
    On failure write `PDF: pending` in the manifest; the docx alone is still a packet.
+   Then the **ATS checks** from apply-assist step 8 (`ats_check.py coverage` and `parse`),
+   with one fix-and-re-export on a parse FAIL. With `PDF: pending`, run coverage against the
+   tailored `.docx` instead and record the parse result as `SKIPPED (no PDF)`.
 5. **Cover letter** when the role calls for one (apply-assist step 7).
-6. **Outreach drafts** into `outreach.md` in the same folder (apply-assist step 9 and the
+6. **Referral hold** exactly as apply-assist step 5a: a confirmed roster match gets the
+   `Referral hold:` Notes line (apply-by = today + 3 business days) and Source = "Referral",
+   and its referral ask is drafted into `outreach.md` as the first message. The packet is
+   still built.
+7. **Outreach drafts** into `outreach.md` in the same folder (apply-assist step 9 and the
    LinkedIn rules in ats-learnings.md). Without the extension, do not search LinkedIn: write
    the three drafts with `[Hiring manager, name not identified]`, `[Recruiter, ...]`,
    `[Director, ...]` placeholders, never an invented name, and count outreach as **owed**, not
    drafted. With the extension, look contacts up as apply-assist does and read any existing
    thread before drafting (ats-learnings.md).
-7. **Manifest** per apply-assist step 8a, including the **claims-changed-vs-master** section
-   and the "What the candidate must do" list with the platform-specific traps.
-8. **Notion:** `Packet Ready = today`, Resume URL / Cover Letter URL, Notes append. One
-   `notion-update-page` per role.
+8. **Manifest** per apply-assist step 8a, including the **ATS check** and
+   **claims-changed-vs-master** sections and the "What the candidate must do" list with the
+   platform-specific traps.
+9. **Notion:** `Packet Ready = today`, Resume URL / Cover Letter URL, Notes append (including
+   the `ATS terms:` line). One `notion-update-page` per role.
 
 ## Finish
 
 - One `PushNotification` (proactive, under 200 chars): "Packet ready: <Company> <Role>
-  [+N more]. Outreach owed: <count from the view>." Send nothing if no packet was built.
-- Report, in this order: packets built (company, role, folder, score, JD rung, PDF status,
-  outreach drafted vs owed); skipped candidates with the reason (gate, screen, unreadable,
-  closed signal, below floor needing the candidate's call); the "paths tried" table; the three
+  [+N more]. Referral asks to send: <N>. Outreach owed: <count from the view>." Send nothing
+  if no packet was built.
+- Report, in this order: referral asks to send now (contact, company, apply-by date);
+  packets built (company, role, folder, score, JD rung, PDF status, outreach drafted vs owed); skipped candidates with the reason (gate, screen, unreadable,
+  closed signal, liveness unconfirmed, below floor or out-of-region on-site needing the candidate's call); the "paths tried" table; the three
   environment lines; packets older than 7 days still unsubmitted.
 - Release the lock.
 

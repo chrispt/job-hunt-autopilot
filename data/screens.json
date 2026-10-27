@@ -25,7 +25,8 @@
     "indeed_max_age_days": 5
   },
   "standout": {
-    "match_threshold": 80
+    "_comment": "A referral contact at the company is the standout. match_threshold null = a high score alone is not a standout (retired 2026-10-26: the 75+ Match band had 0 interviews in 36 applications). Set a number to bring it back.",
+    "match_threshold": null
   },
   "age_out": {
     "_comment": "Standing-queue lifecycle policy read by scripts/age_out.py, not the intake screen above. Added 2026-09-10 when the one-off hybrid pass (runs/2026-09-10/ageout_hybrid_result.json) was productized into funnel-review step 5.",

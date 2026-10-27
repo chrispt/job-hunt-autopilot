@@ -1,0 +1,24 @@
+{
+  "_comment": "What must survive PDF text extraction of every tailored resume (scripts/ats_check.py parse). Fill in from your master resume; update when its headings, employers, titles or dates change. Use a plain hyphen in dates; other dash glyphs are normalized before comparing.",
+  "name": "<Your Name>",
+  "email": "<you@example.com>",
+  "phone": "<555-555-0100>",
+  "headings": [
+    "CORE COMPETENCIES",
+    "PROFESSIONAL EXPERIENCE",
+    "EDUCATION"
+  ],
+  "roles": [
+    {
+      "employer": "<Employer>",
+      "title": "<Current title>",
+      "dates": "<Month YYYY> - <Month YYYY>"
+    },
+    {
+      "employer": "<Employer>",
+      "title": "<Earlier title, same employer>",
+      "dates": "<Month YYYY> - <Month YYYY>"
+    }
+  ],
+  "max_pages": 2
+}

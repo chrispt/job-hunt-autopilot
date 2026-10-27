@@ -8,6 +8,7 @@
     "data/queries.json",
     "data/screens.json",
     "data/exclusions.md",
+    "data/resume-expect.json",
     "data/pipeline-snapshot.json"
   ]
 }

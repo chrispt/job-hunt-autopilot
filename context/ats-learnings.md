@@ -42,6 +42,26 @@ dead posting rather than an error.
   seen with "Yes" pre-selected by the widget; a wrong answer there disqualifies the application
   silently and immediately, with no error and no human review. Anything outside what the
   profile covers (misdemeanors, pending charges, background-check consent wording) goes to you.
+- **Keystrokes are dropped while the Chrome window lacks focus** (seen on Ashby and
+  Greenhouse). Typing after `element.focus()` lands nowhere, with no error. One coordinate
+  click on a form field restores window focus; after that, focus-then-type works. Read each
+  value back.
+
+## Resume parse check
+
+`scripts/ats_check.py parse` extracts each tailored PDF's text with `pypdf` (optional;
+`python -m pip install pypdf`) and checks it against `data/resume-expect.json`: contact details
+on page 1, section headings, each employer, title and date range, and that each role's dates
+sit next to its title. Parsers that drift a date range onto the wrong title are how a
+multi-role employer gets merged into one long job and tenure gets misread. Unusual glyphs
+(box-drawing bars, U+2015 horizontal bars as date separators, ligatures) are flagged; a plain
+hyphen is the safest date separator. Fill in `data/resume-expect.json` from your master
+resume once and update it when the master changes.
+
+`ats_check.py pages --pdf <cover letter PDF> --max 1` checks the cover letter stays on one
+page. If your master resume uses a section or page break to start page 2, page 1 has no
+slack: lines added there push all of page 2 onto a third page, so keep page-1 tailoring
+length-neutral and check the page count after every export.
 
 ## Work Experience and Education: always fill them in
 
@@ -91,6 +111,15 @@ not a safe trade: on Workday an application cannot be amended after Submit.
 
 ## Workday (`*.myworkdayjobs.com`)
 
+- **On the Review step, "Save and Continue" becomes Submit, on the same element.** Re-read the
+  current step and the button text before every click on it, never click it in the same batch
+  as a step you just did yourself, and stop if a pre-click check comes back empty (the step you
+  expected is no longer on screen). A stale reference to that button has submitted an
+  application before its review.
+- When a tenant marks the resume upload as required on My Experience, upload first, while the
+  step is still empty, then enter work history.
+- An Education section with no date or "in progress" field makes an unfinished degree read as
+  complete. Ask before entering it.
 - "Autofill with Resume" fragments work history; fill it manually.
 - Step 1 is usually account creation or sign-in; nothing is reachable before it. That step is
   yours.
@@ -114,6 +143,13 @@ not a safe trade: on Workday an application cannot be amended after Submit.
   inconclusive, never as expired.
 - Oracle keeps a server-side draft across session timeouts; check what survived before
   re-entering.
+- **iCIMS renders the form in a same-origin iframe.** `read_page` and `find` cannot see
+  inside it and `file_upload` cannot reach its file inputs, so fill through `javascript_tool`
+  on the iframe's `contentDocument` and attach the files yourself. Custom dropdowns
+  (`<id>_icimsDropdown`) have a `.dropdown-search` box: set its value, dispatch `input` and
+  `keyup`, wait about 2.5 s, then click the matching list item. Never navigate the tab to the
+  iframe's own URL (it can bounce and end the session). Intermediate step buttons read "Submit
+  Profile" or "Submit"; treat each as a Submit and click it yourself.
 
 ## Post-application outreach (LinkedIn)
 

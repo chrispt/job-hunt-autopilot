@@ -185,3 +185,22 @@ unopened; `audit.py` printed INCOMPLETE, which is the control working.
 **Rule:** step 2 now says every thread is opened except the one single-job subject shape, and
 that anything else is a digest. Covered by `SweepSkillProse` in `test_audit.py`, which fails if
 the prose names "<Role> at <Company>" before declaring other subjects digests.
+
+## 2026-10-09: packets rebuilt for closed reqs; the jobs-guest endpoint lags
+
+Two LinkedIn rows (one employer on Workday, one on Greenhouse) had their packets rebuilt on
+2026-10-09 after the JD read ladder fetched them from LinkedIn's public
+`jobs-guest/jobs/api/jobPosting/<id>` endpoint that morning. Neither response carried the "No
+longer accepting applications" text, which the run read as open. That afternoon logged-in
+LinkedIn showed both as "Not currently accepting applications", and neither req appeared on the
+employer's own board (Workday CXS search, Greenhouse boards-api job list). Both rebuilds were
+wasted work. Three other rows the same day did show the closed text on jobs-guest, so the
+endpoint is not always stale, just not reliable. A fourth posting was live, but only logged-in
+LinkedIn showed it as On-site in another state; the guest text did not make that clear.
+**Rule:** jobs-guest is for reading JD text only; a missing closed notice there is
+inconclusive. Before any packet build or rebuild, liveness is confirmed on the employer's ATS
+job list or on logged-in LinkedIn via the extension, the workplace type is taken from the
+LinkedIn chip or the ATS record and checked against the location rule, and the manifest
+records `Liveness: <source>, <date>`. Enforced in `context/config.md` ("Liveness and work
+arrangement"), `skills/apply-assist/SKILL.md` step 3 and the link-list worker brief, and
+`skills/apply-prep/SKILL.md` per-role step 1.

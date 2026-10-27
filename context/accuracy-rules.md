@@ -42,6 +42,20 @@ presented as two jobs.
 Single-role companies: dates on the company line only. Multi-role companies: each title line
 gets its own sub-role date range.
 
+## JD vocabulary and ATS alignment
+
+ATS rankers score the resume against the posting's own words before a person opens it, so the
+tailored resume says what you did in the JD's vocabulary. Words change, facts never do, and
+every rule above wins over this section.
+
+- **Allowed:** rewording a bullet into the JD's phrase for the same work (same scope, same
+  numbers); a headline that mirrors the posting title when it truthfully describes your work;
+  Core Competencies entries in the JD's phrasing for things you can speak to unprepared.
+- **Not allowed:** hidden or white text; keyword dumps or an "ATS keywords" block; any JD term
+  with no backing fact in your master resume (apply-assist records these as gaps); tools you
+  have not used; rewording that changes the claim; a title you never held.
+- Every vocabulary swap is listed in the packet manifest's "Claims changed vs master".
+
 ## Voice
 
 No em dashes in anything a person other than you will read (resumes, cover letters, outreach,

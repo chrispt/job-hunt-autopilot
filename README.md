@@ -126,8 +126,8 @@ the folder is not restored, and running `userdata.py apply` once by hand fixes i
    candidates; the model scores and creates rows; `scripts/audit.py` prints a coverage block
    derived from the transcript. Then email reconciliation, then the report: packets ready,
    standouts, Top 3, outreach owed with drafts, follow-ups due.
-2. **Mon/Wed/Fri, `apply-prep`.** Reads the ranked queue, prefers standouts (high score or a
-   company where you know someone), reads the JD through a ladder that works unattended,
+2. **Mon/Wed/Fri, `apply-prep`.** Reads the ranked queue, prefers standouts (a company where
+   you know someone; that role also goes on a referral hold so the ask goes out first), reads the JD through a ladder that works unattended,
    re-scores, gates, tailors your resume and cover letter from your master file, makes PDFs,
    drafts outreach, writes a manifest with a "claims changed vs master" section, and sets
    `Packet Ready`.
